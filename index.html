@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V&G GTM Agent Dashboard</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242836;
+    --border: #2e3348;
+    --text: #e4e6f0;
+    --text2: #8b8fa8;
+    --accent: #6c5ce7;
+    --accent2: #a78bfa;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* Header */
+  .header { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 32px; display:flex; align-items:center; justify-content:space-between; }
+  .header h1 { font-size:20px; font-weight:700; }
+  .header h1 span { color:var(--accent2); }
+  .header-meta { font-size:13px; color:var(--text2); }
+  .header-meta .update-time { color:var(--cyan); }
+
+  /* Tabs */
+  .tab-bar { background:var(--surface); border-bottom:1px solid var(--border); padding:0 32px; display:flex; gap:0; overflow-x:auto; }
+  .tab-bar button { background:none; border:none; color:var(--text2); font-size:14px; font-weight:500; padding:12px 20px; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; transition:all .2s; }
+  .tab-bar button:hover { color:var(--text); background:var(--surface2); }
+  .tab-bar button.active { color:var(--accent2); border-bottom-color:var(--accent2); }
+
+  /* Content */
+  .content { max-width:1280px; margin:0 auto; padding:24px 32px; }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  /* Cards */
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; }
+  .card h2 { font-size:16px; font-weight:600; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .card h3 { font-size:14px; font-weight:600; margin:16px 0 10px; color:var(--accent2); }
+
+  /* Status Grid */
+  .status-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:12px; }
+  .status-item { background:var(--surface2); border-radius:10px; padding:16px; display:flex; flex-direction:column; gap:8px; }
+  .status-item .name { font-size:14px; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .status-item .meta { font-size:12px; color:var(--text2); }
+  .status-item .schedule { font-size:11px; color:var(--cyan); background:rgba(6,182,212,.1); padding:2px 8px; border-radius:4px; display:inline-block; width:fit-content; }
+  .status-item .note { font-size:12px; color:var(--yellow); margin-top:4px; }
+  .dot { width:10px; height:10px; border-radius:50%; display:inline-block; flex-shrink:0; }
+  .dot.green { background:var(--green); box-shadow:0 0 6px var(--green); }
+  .dot.yellow { background:var(--yellow); box-shadow:0 0 6px var(--yellow); }
+  .dot.red { background:var(--red); box-shadow:0 0 6px var(--red); }
+  .dot.gray { background:#555; }
+
+  /* Tables */
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { text-align:left; color:var(--text2); font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+  td { padding:8px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:rgba(108,92,231,.05); }
+
+  /* Feedback Loop */
+  .feedback-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:10px; }
+  .fb-item { background:var(--surface2); border-radius:8px; padding:12px 14px; display:flex; align-items:flex-start; gap:10px; font-size:13px; }
+  .fb-id { font-weight:700; color:var(--accent2); min-width:28px; }
+  .fb-dir { color:var(--cyan); font-weight:500; }
+  .fb-status { margin-left:auto; font-size:12px; white-space:nowrap; }
+
+  /* Flow Diagram */
+  .flow-container { background:var(--surface2); border-radius:10px; padding:20px; overflow-x:auto; }
+  .flow-container pre { font-family:'JetBrains Mono','Fira Code',monospace; font-size:12px; line-height:1.6; color:var(--text); white-space:pre; }
+
+  /* Folder Tree */
+  .folder-tree { font-family:'JetBrains Mono','Fira Code',monospace; font-size:13px; line-height:1.8; background:var(--surface2); border-radius:10px; padding:20px; overflow-x:auto; white-space:pre; }
+  .folder-tree .folder { color:var(--accent2); font-weight:600; }
+  .folder-tree .desc { color:var(--text2); }
+
+  /* KPI */
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:12px; margin-bottom:20px; }
+  .kpi-card { background:var(--surface2); border-radius:10px; padding:16px; text-align:center; }
+  .kpi-card .label { font-size:12px; color:var(--text2); margin-bottom:8px; }
+  .kpi-card .value { font-size:28px; font-weight:700; }
+  .kpi-card .target { font-size:11px; color:var(--text2); margin-top:4px; }
+  .progress-bar { height:6px; background:var(--border); border-radius:3px; margin-top:8px; overflow:hidden; }
+  .progress-bar .fill { height:100%; border-radius:3px; transition:width .5s ease; }
+  .progress-bar .fill.green { background:var(--green); }
+  .progress-bar .fill.yellow { background:var(--yellow); }
+  .progress-bar .fill.red { background:var(--red); }
+
+  /* Badge */
+  .badge { font-size:11px; padding:2px 8px; border-radius:4px; font-weight:500; }
+  .badge.green { background:rgba(34,197,94,.15); color:var(--green); }
+  .badge.yellow { background:rgba(234,179,8,.15); color:var(--yellow); }
+  .badge.red { background:rgba(239,68,68,.15); color:var(--red); }
+  .badge.blue { background:rgba(59,130,246,.15); color:var(--blue); }
+  .badge.gray { background:rgba(139,143,168,.15); color:var(--text2); }
+
+  /* Recommendations */
+  .rec-list { list-style:none; }
+  .rec-list li { padding:10px 14px; background:var(--surface2); border-radius:8px; margin-bottom:8px; font-size:13px; display:flex; gap:10px; align-items:flex-start; }
+  .rec-list li .num { color:var(--accent2); font-weight:700; min-width:20px; }
+
+  /* Rules section */
+  .rule-block { background:var(--surface2); border-radius:8px; padding:14px 16px; margin-bottom:10px; }
+  .rule-block .rule-title { font-size:13px; font-weight:600; color:var(--cyan); margin-bottom:6px; }
+  .rule-block .rule-body { font-size:12px; color:var(--text2); line-height:1.6; }
+
+  /* Responsive */
+  @media(max-width:768px) {
+    .content { padding:16px; }
+    .header { padding:12px 16px; }
+    .tab-bar { padding:0 16px; }
+    .status-grid, .feedback-grid, .kpi-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span>V&G</span> GTM Agent Dashboard</h1>
+  <div class="header-meta">Last updated: <span class="update-time">2026-04-01 09:00 KST</span></div>
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="active" data-tab="overview">에이전트 현황</button>
+  <button data-tab="feedback">피드백 루프</button>
+  <button data-tab="collaboration">협업 규칙</button>
+  <button data-tab="folders">폴더 구조</button>
+  <button data-tab="outputs">산출물 목록</button>
+  <button data-tab="kpi">KPI 추적</button>
+</div>
+
+<div class="content">
+
+<!-- ==================== TAB 1: 에이전트 현황 ==================== -->
+<div class="tab-panel active" id="overview">
+  <div class="card">
+    <h2>📊 에이전트 상태 현황</h2>
+    <div class="status-grid" id="agentStatusGrid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📌 Advisor 권고사항</h2>
+    <ul class="rec-list" id="recList">
+      <!-- populated by JS -->
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>🔄 정보 흐름 다이어그램</h2>
+    <div class="flow-container">
+      <pre>
+ ┌──────────┐    ┌──────────┐    ┌──────────┐
+ │  시장조사  │───▶│ 경쟁사분석 │───▶│  영업지원  │
+ │ (일간12시) │    │ (일간09시) │    │ (온디맨드) │
+ └────┬─────┘    └──────────┘    └─────┬────┘
+      │                                 │
+      │    ┌──────────┐                 │    ┌───────────┐
+      ├───▶│지자체리서치│────────────────┘───▶│ B2G마케팅  │
+      │    │(일간+주간) │                     │ (온디맨드)  │
+      │    └──────────┘                     └─────┬─────┘
+      │                                           │
+      │    ┌───────────┐                          │
+      └───▶│퍼스널브랜딩│◀─────────────────────────┘
+           │ (주간+온디) │
+           └───────────┘
+
+           ┌───────────────────────────────┐
+           │      GTM Advisor (총괄)        │
+           │  주간 Health Check + 종합 리뷰  │
+           └───────────────────────────────┘
+           ┌───────────────────────────────┐
+           │     QA Verifier (검증)         │
+           │  모든 에이전트 산출물 품질 검증   │
+           └───────────────────────────────┘
+      </pre>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TAB 2: 피드백 루프 ==================== -->
+<div class="tab-panel" id="feedback">
+  <div class="card">
+    <h2>🔁 피드백 루프 현황 (F1 ~ F10)</h2>
+    <div class="feedback-grid" id="feedbackGrid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📋 피드백 루프 상세 규칙</h2>
+    <table>
+      <thead><tr><th>ID</th><th>방향</th><th>피드백 내용</th><th>구현 방식</th></tr></thead>
+      <tbody>
+        <tr><td>F1</td><td>시장조사 → 전체</td><td>이번 주 핵심 키워드 TOP 3</td><td>리포트 상단 <code>## 핵심 키워드</code> 섹션</td></tr>
+        <tr><td>F2</td><td>경쟁사 → 영업지원</td><td>주의할 경쟁사 동향</td><td>리포트 하단 <code>## 영업지원 전달사항</code></td></tr>
+        <tr><td>F3</td><td>영업지원 → 시장조사</td><td>현장에서 자주 언급되는 키워드</td><td>후속조치 파일 <code>## 시장조사 피드백</code></td></tr>
+        <tr><td>F4</td><td>영업지원 → 지자체리서치</td><td>방문 후 미팅 결과, DB 업데이트</td><td>미팅 후속조치 <code>## 지자체 리서치 업데이트</code></td></tr>
+        <tr><td>F5</td><td>영업지원 → B2G마케팅</td><td>현장 피드백, 고객 니즈 변화</td><td>영업자료 <code>## 마케팅 피드백</code></td></tr>
+        <tr><td>F6</td><td>지자체리서치 → B2G마케팅</td><td>지자체 핵심 이슈, 소재 추천</td><td>브리핑 시트 <code>## 마케팅 소재 추천</code></td></tr>
+        <tr><td>F7</td><td>B2G마케팅 → 퍼스널브랜딩</td><td>이번 달 마케팅 핵심 메시지</td><td>계획 파일 <code>## 퍼스널 브랜딩 연계 소재</code></td></tr>
+        <tr><td>F8</td><td>퍼스널브랜딩 → B2G마케팅</td><td>Threads 반응 좋은 주제, SNS 트렌드</td><td>브리핑 <code>## B2G 마케팅 피드백</code></td></tr>
+        <tr><td>F9</td><td>QA Verifier → 원본</td><td>수치 오류, 출처 미확인 항목</td><td>원본 파일 하단 <code>## QA 검증 결과</code></td></tr>
+        <tr><td>F10</td><td>GTM Advisor → 전체</td><td>주간 종합 피드백, 전략 방향 조정</td><td>주간 리뷰에 에이전트별 피드백</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== TAB 3: 협업 규칙 ==================== -->
+<div class="tab-panel" id="collaboration">
+  <div class="card">
+    <h2>⚡ 자동 트리거 (스케줄 기반)</h2>
+    <table>
+      <thead><tr><th>트리거 이벤트</th><th>후속 액션</th><th>담당</th></tr></thead>
+      <tbody>
+        <tr><td>시장조사 리포트 생성 (매일 12:00)</td><td>영업 기회 추출 + 경쟁사 교차 참조</td><td>영업지원, 경쟁사 분석</td></tr>
+        <tr><td>경쟁사 분석 리포트 생성 (매일 09:00)</td><td>배틀카드 갱신 필요 여부 체크</td><td>영업지원</td></tr>
+        <tr><td>지자체 리서치 주간 보고 (매주 월 10:00)</td><td>발주 현황 기반 영업 기회 업데이트</td><td>영업지원</td></tr>
+        <tr><td>주간 콘텐츠 계획 발행 (매주 월)</td><td>Threads 초안 작성 시작</td><td>퍼스널 브랜딩</td></tr>
+        <tr><td>GTM Advisor 주간 리뷰 (매주 월)</td><td>전체 에이전트 Health Check</td><td>GTM Advisor</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🎯 온디맨드 트리거 (이벤트 기반)</h2>
+    <table>
+      <thead><tr><th>트리거 이벤트</th><th>후속 액션</th><th>담당</th></tr></thead>
+      <tbody>
+        <tr><td>Jerry가 미팅 노트 공유</td><td>후속조치 도출 + 브리핑시트 갱신</td><td>영업지원, 지자체 리서치</td></tr>
+        <tr><td>Jerry가 특정 지자체 조사 요청</td><td>심층 조사 + 영업 패키지 구성</td><td>지자체 리서치, 영업지원</td></tr>
+        <tr><td>신규 파트너 협업 논의</td><td>폴더 생성 + 조사 리포트</td><td>GTM Advisor</td></tr>
+        <tr><td>입찰 공고 감지</td><td>Go/No-Go 분석 + 경쟁 환경 분석</td><td>GTM Advisor, 경쟁사 분석</td></tr>
+        <tr><td>마케팅 캠페인 기획 요청</td><td>캠페인 계획 + Threads 연계</td><td>B2G 마케팅, 퍼스널 브랜딩</td></tr>
+        <tr><td>주요 문서 최종 작성 완료</td><td>QA 검증 수행</td><td>QA Verifier</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>📝 산출물 공통 포맷</h2>
+    <div class="flow-container">
+      <pre>
+# [문서 제목]
+
+> 작성 에이전트: [에이전트명]
+> 작성일: YYYY-MM-DD
+> 관련 에이전트: [참조한 다른 에이전트 산출물]
+
+---
+
+## 핵심 요약
+[1~3줄 요약]
+
+## 본문
+[상세 내용]
+
+## 후속 액션
+- [ ] 액션 항목 1 (담당: [에이전트명])
+- [ ] 액션 항목 2 (담당: [에이전트명])
+
+## 피드백 섹션
+[해당 피드백 루프(F1~F10) 섹션]
+      </pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔍 QA 검증 대상 기준</h2>
+    <div class="rule-block"><div class="rule-body">• 수치/통계가 포함된 모든 리포트<br>• 외부 공유 목적 문서 (고객 제안서, 브리핑 자료 등)<br>• 경쟁사 비교표 및 배틀카드<br>• 월간/분기 종합 리포트</div></div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Health Check 상태 판정 기준</h2>
+    <table>
+      <thead><tr><th>상태</th><th>조건</th><th>Advisor 액션</th></tr></thead>
+      <tbody>
+        <tr><td><span class="dot green"></span> 정상</td><td>예정 주기 내 산출물 정상 생성</td><td>모니터링 유지</td></tr>
+        <tr><td><span class="dot yellow"></span> 주의</td><td>1~2영업일 미생성 또는 품질 이슈</td><td>Jerry에게 주의 알림</td></tr>
+        <tr><td><span class="dot red"></span> 지연</td><td>2영업일 이상 미생성</td><td>Jerry에게 즉시 알림 + 원인 분석</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== TAB 4: 폴더 구조 ==================== -->
+<div class="tab-panel" id="folders">
+  <div class="card">
+    <h2>📂 GTM 폴더 구조 전체</h2>
+    <div class="folder-tree"><span class="folder">GTM/</span>
+├── <span class="folder">00_GTM운영/</span>                    <span class="desc">← GTM Advisor 총괄</span>
+│   ├── <span class="folder">에이전트_아키텍처/</span>
+│   └── <span class="folder">KPI_TASK_운영/</span>
+│
+├── <span class="folder">01_시장조사/</span>                    <span class="desc">← Market Intel Agent</span>
+│   ├── <span class="folder">국내_시장조사/</span>              <span class="desc">YYYY-MM-DD_시장조사.md</span>
+│   ├── <span class="folder">글로벌_시장조사/</span>            <span class="desc">YYYY-MM-DD_global_market_report.md</span>
+│   └── <span class="folder">경쟁사_분석/</span>               <span class="desc">YYYY-MM-DD_경쟁사분석.md</span>
+│
+├── <span class="folder">02_지자체_리서치/</span>               <span class="desc">← Municipal Research Agent</span>
+│   ├── <span class="folder">[시도명]/[시군명].md</span>
+│   ├── <span class="folder">리서치_리포트/</span>
+│   ├── <span class="folder">daily-updates/</span>
+│   └── <span class="folder">weekly-procurement/</span>
+│
+├── <span class="folder">03_영업지원/</span>                    <span class="desc">← Sales Support Agent</span>
+│   ├── <span class="folder">영업대표_프로필/</span>
+│   ├── <span class="folder">지역별_담당자DB/</span>
+│   └── <span class="folder">영업자료/</span>                  <span class="desc">YYYY-MM-DD_[유형]_[대상].md</span>
+│
+├── <span class="folder">04_B2G_마케팅/</span>                  <span class="desc">← B2G Marketing Agent</span>
+│   ├── <span class="folder">전략기획/</span>
+│   ├── <span class="folder">콘텐츠/</span>
+│   └── <span class="folder">캠페인/</span>
+│
+├── <span class="folder">05_퍼스널_브랜딩/</span>               <span class="desc">← Personal Branding Agent</span>
+│   ├── <span class="folder">운영계획/</span>
+│   └── <span class="folder">Threads_콘텐츠/</span>
+│
+├── <span class="folder">06_파트너_협업/</span>                 <span class="desc">← 파트너사별 하위 폴더</span>
+│   └── <span class="folder">[파트너명]/</span>
+│
+├── <span class="folder">07_리포트_아카이브/</span>             <span class="desc">← 주기별 리포트 통합</span>
+│   ├── <span class="folder">주간/</span>
+│   ├── <span class="folder">월간/</span>
+│   └── <span class="folder">분기/</span>
+│
+├── <span class="folder">08_공유_데이터DB/</span>               <span class="desc">← 에이전트 공용 DB</span>
+│
+└── <span class="folder">_스킬파일/</span>                      <span class="desc">← .skill 파일 보관</span></div>
+  </div>
+
+  <div class="card">
+    <h2>🗂️ 공유 데이터DB 관리 책임</h2>
+    <table>
+      <thead><tr><th>DB 파일</th><th>주 관리 에이전트</th><th>업데이트 트리거</th></tr></thead>
+      <tbody>
+        <tr><td>VnG_솔루션_레퍼런스_DB.xlsx</td><td>GTM Advisor</td><td>신규 레퍼런스 확정 시</td></tr>
+        <tr><td>경쟁사_프로파일_DB.xlsx</td><td>경쟁사 분석</td><td>경쟁사 동향 변화 시</td></tr>
+        <tr><td>lead_db.xlsx</td><td>영업지원</td><td>신규 리드 발굴, 상태 변경</td></tr>
+        <tr><td>content_calendar.xlsx</td><td>퍼스널 브랜딩</td><td>콘텐츠 계획 수립/업데이트</td></tr>
+        <tr><td>edu_demo_tracker.xlsx</td><td>GTM Advisor</td><td>교육/데모 수행 후</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>➕ 신규 폴더 자동 생성 규칙</h2>
+    <table>
+      <thead><tr><th>상황</th><th>생성 폴더</th><th>예시</th></tr></thead>
+      <tbody>
+        <tr><td>새 파트너사 협업</td><td><code>06_파트너_협업/[파트너명]/</code></td><td>06_파트너_협업/다리소프트/</td></tr>
+        <tr><td>신규 시도 리서치</td><td><code>02_지자체_리서치/[시도명]/</code></td><td>02_지자체_리서치/강원도/</td></tr>
+        <tr><td>입찰 건 집중 대응</td><td><code>03_영업지원/영업자료/[사업명]/</code></td><td>03_영업지원/영업자료/성남시_GIS_고도화/</td></tr>
+        <tr><td>마케팅 캠페인</td><td><code>04_B2G_마케팅/캠페인/[캠페인명]/</code></td><td>04_B2G_마케팅/캠페인/2026_GIS_세미나/</td></tr>
+        <tr><td>동일 유형 10개+</td><td>월별 하위 폴더</td><td>01_시장조사/국내_시장조사/2026-04/</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== TAB 5: 산출물 목록 ==================== -->
+<div class="tab-panel" id="outputs">
+  <div class="card">
+    <h2>📄 에이전트별 최근 산출물</h2>
+    <div id="outputsList">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TAB 6: KPI 추적 ==================== -->
+<div class="tab-panel" id="kpi">
+  <div class="card">
+    <h2>🎯 2026년 KPI 현황 (Q1 마감 기준)</h2>
+    <div class="kpi-grid" id="kpiGrid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📈 KPI 상세</h2>
+    <table>
+      <thead><tr><th>KPI 영역</th><th>지표</th><th>연간 목표</th><th>Q1 실적</th><th>달성률</th><th>비율</th><th>상태</th></tr></thead>
+      <tbody id="kpiTable">
+        <!-- populated by JS -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// ===== DATA (이 섹션을 업데이트하면 대시보드가 자동 반영됩니다) =====
+
+const LAST_UPDATED = '2026-04-01 09:00 KST';
+
+const agents = [
+  { name:'시장조사 에이전트', schedule:'일간 12:00', status:'green', lastDate:'2026-03-31', weekCount:5, note:'' },
+  { name:'경쟁사 분석 에이전트', schedule:'일간 09:00', status:'green', lastDate:'2026-03-30', weekCount:1, note:'주간 리포트 정상' },
+  { name:'글로벌 시장조사', schedule:'주간 (월)', status:'green', lastDate:'2026-03-30', weekCount:1, note:'' },
+  { name:'지자체 리서치 에이전트', schedule:'일간 14:00 + 주간 월 10:00', status:'yellow', lastDate:'2026-03-18', weekCount:0, note:'경기도 3개 시군만 완료, 타 시도 미착수' },
+  { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-03-17', weekCount:0, note:'온디맨드 기반, 미팅 시 활성화' },
+  { name:'B2G 마케팅 에이전트', schedule:'온디맨드', status:'yellow', lastDate:'-', weekCount:0, note:'전략 문서만 존재, 실행 콘텐츠 미착수' },
+  { name:'퍼스널 브랜딩 에이전트', schedule:'주간 + 온디맨드', status:'green', lastDate:'2026-03-31', weekCount:3, note:'' },
+  { name:'QA Verifier', schedule:'온디맨드', status:'gray', lastDate:'-', weekCount:0, note:'검증 요청 시 활성화' },
+];
+
+const feedbackLoops = [
+  { id:'F1', from:'시장조사', to:'전체', status:'pending', desc:'핵심 키워드 TOP 3' },
+  { id:'F2', from:'경쟁사분석', to:'영업지원', status:'pending', desc:'주의할 경쟁사 동향' },
+  { id:'F3', from:'영업지원', to:'시장조사', status:'pending', desc:'현장 언급 키워드' },
+  { id:'F4', from:'영업지원', to:'지자체리서치', status:'pending', desc:'미팅 결과 DB 업데이트' },
+  { id:'F5', from:'영업지원', to:'B2G마케팅', status:'pending', desc:'현장 피드백' },
+  { id:'F6', from:'지자체리서치', to:'B2G마케팅', status:'pending', desc:'마케팅 소재 추천' },
+  { id:'F7', from:'B2G마케팅', to:'퍼스널브랜딩', status:'pending', desc:'핵심 메시지 연계' },
+  { id:'F8', from:'퍼스널브랜딩', to:'B2G마케팅', status:'pending', desc:'SNS 트렌드 피드백' },
+  { id:'F9', from:'QA Verifier', to:'원본 에이전트', status:'pending', desc:'검증 결과' },
+  { id:'F10', from:'GTM Advisor', to:'전체', status:'pending', desc:'주간 종합 피드백' },
+];
+
+const recommendations = [
+  '지자체 리서치 확대 필요 — 경기도 3개 시군만 완료. 영업팀 방문 계획 기반 우선순위 지역 조사 착수 권고',
+  'B2G 마케팅 실행 콘텐츠 착수 필요 — 전략 문서 준비 완료. 레퍼런스 사례집, 기고문 등 제작 시작 권고',
+  '피드백 루프 점진적 활성화 — 다음 주부터 F1(시장조사 핵심 키워드), F2(경쟁사→영업지원) 우선 적용 시작 권고',
+];
+
+const outputs = {
+  '시장조사 (국내)': [
+    { date:'2026-03-31', name:'2026-03-31_시장조사.md' },
+    { date:'2026-03-30', name:'2026-03-30_시장조사.md' },
+    { date:'2026-03-27', name:'2026-03-27_시장조사.md' },
+    { date:'2026-03-26', name:'2026-03-26_시장조사.md' },
+    { date:'2026-03-25', name:'2026-03-25_시장조사.md' },
+  ],
+  '시장조사 (글로벌)': [
+    { date:'2026-03-30', name:'2026-03-30_global_market_report.md' },
+    { date:'2026-03-25', name:'2026-03-25_global_market_report.md' },
+  ],
+  '경쟁사 분석': [
+    { date:'2026-03-30', name:'2026-03-30_weekly_competitor_report.md' },
+    { date:'2026-03-23', name:'2026-03-23_weekly_competitor_report.md' },
+  ],
+  '지자체 리서치': [
+    { date:'2026-03-18', name:'경기도/동두천시.md' },
+    { date:'2026-03-18', name:'경기도/양주시.md' },
+    { date:'2026-03-18', name:'경기도/연천군.md' },
+  ],
+  '영업지원': [
+    { date:'2026-03-17', name:'2026-03-17_평창군_미팅_후속조치.md' },
+    { date:'2026-03-17', name:'2026-03-17_지적관리_업무지원시스템_영업자료.md' },
+  ],
+  'B2G 마케팅': [
+    { date:'-', name:'V&G_B2G_마케팅_방향성_보고서.md' },
+    { date:'-', name:'2026_마케팅_1순위_2순위_실행방안.md' },
+  ],
+  '퍼스널 브랜딩': [
+    { date:'2026-03-31', name:'2026-03-31_tue_blog.md' },
+    { date:'2026-03-30', name:'2026-03-30_weekly-plan.md' },
+    { date:'2026-03-26', name:'2026-03-26_thu_blog.md' },
+  ],
+  '리포트 (주간)': [
+    { date:'2026-03-30', name:'GTM_주간리뷰_2026-03-30.md' },
+    { date:'2026-03-30', name:'2026-03-30_subagent_health_check.md' },
+    { date:'2026-03-23', name:'GTM_주간평가_2026-03-23.md' },
+  ],
+};
+
+const kpiData = [
+  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:3, ratio:10 },
+  { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:2, ratio:15 },
+  { area:'데모/PoC', metric:'표준 데모 작성 건수', target:10, actual:0, ratio:5 },
+  { area:'데모/PoC', metric:'데모/PoC 수행 건수', target:15, actual:0, ratio:5 },
+  { area:'교육', metric:'교육 수행 건수', target:30, actual:3, ratio:10 },
+  { area:'교육', metric:'커리큘럼/콘텐츠 제작', target:10, actual:1, ratio:5 },
+  { area:'교육', metric:'교육 후 추가 리드', target:5, actual:0, ratio:5 },
+  { area:'마케팅', metric:'마케팅 기반 리드 수', target:10, actual:0, ratio:5 },
+];
+
+// ===== RENDER =====
+
+// Tabs
+document.getElementById('tabBar').addEventListener('click', e => {
+  if(e.target.tagName!=='BUTTON') return;
+  document.querySelectorAll('.tab-bar button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById(e.target.dataset.tab).classList.add('active');
+});
+
+// Agent Status
+const agentGrid = document.getElementById('agentStatusGrid');
+agents.forEach(a => {
+  const statusLabel = a.status==='green'?'정상':a.status==='yellow'?'주의':a.status==='red'?'지연':'대기';
+  agentGrid.innerHTML += `
+    <div class="status-item">
+      <div class="name"><span class="dot ${a.status}"></span>${a.name} <span class="badge ${a.status}">${statusLabel}</span></div>
+      <div class="schedule">${a.schedule}</div>
+      <div class="meta">최종 산출물: ${a.lastDate} · 이번 주: ${a.weekCount}건</div>
+      ${a.note?`<div class="note">⚠ ${a.note}</div>`:''}
+    </div>`;
+});
+
+// Recommendations
+const recList = document.getElementById('recList');
+recommendations.forEach((r,i) => {
+  recList.innerHTML += `<li><span class="num">${i+1}</span><span>${r}</span></li>`;
+});
+
+// Feedback Grid
+const fbGrid = document.getElementById('feedbackGrid');
+feedbackLoops.forEach(f => {
+  const st = f.status==='active'?'✅ 활성':'⏳ 미구현';
+  const cls = f.status==='active'?'green':'gray';
+  fbGrid.innerHTML += `
+    <div class="fb-item">
+      <span class="fb-id">${f.id}</span>
+      <div><span class="fb-dir">${f.from} → ${f.to}</span><br><span style="color:var(--text2)">${f.desc}</span></div>
+      <span class="fb-status"><span class="badge ${cls}">${st}</span></span>
+    </div>`;
+});
+
+// Outputs
+const outDiv = document.getElementById('outputsList');
+Object.entries(outputs).forEach(([cat, items]) => {
+  let html = `<h3>${cat}</h3><table><thead><tr><th>날짜</th><th>파일명</th></tr></thead><tbody>`;
+  items.forEach(it => { html += `<tr><td>${it.date}</td><td>${it.name}</td></tr>`; });
+  html += '</tbody></table>';
+  outDiv.innerHTML += html;
+});
+
+// KPI
+const kpiGrid = document.getElementById('kpiGrid');
+const kpiTable = document.getElementById('kpiTable');
+let weightedTotal = 0;
+
+kpiData.forEach(k => {
+  const pct = Math.round((k.actual/k.target)*100);
+  const timePct = 25; // Q1 = 25%
+  const cls = pct>=timePct?'green':pct>=timePct*0.6?'yellow':'red';
+  const statusLabel = cls==='green'?'🟢 순항':cls==='yellow'?'🟡 주의':'🔴 위험';
+  weightedTotal += (pct/100)*k.ratio;
+
+  kpiTable.innerHTML += `<tr>
+    <td>${k.area}</td><td>${k.metric}</td><td>${k.target}건</td><td>${k.actual}건</td>
+    <td>${pct}%</td><td>${k.ratio}%</td><td><span class="badge ${cls}">${statusLabel}</span></td></tr>`;
+});
+
+// KPI summary cards
+const totalPct = Math.round(weightedTotal/0.6*100)/100; // normalized
+kpiGrid.innerHTML = `
+  <div class="kpi-card">
+    <div class="label">가중 달성률</div>
+    <div class="value" style="color:var(--accent2)">${weightedTotal.toFixed(1)}%</div>
+    <div class="target">목표 60% 기준 (연간 비율 합)</div>
+    <div class="progress-bar"><div class="fill ${weightedTotal>=15?'green':weightedTotal>=9?'yellow':'red'}" style="width:${Math.min(weightedTotal/60*100,100)}%"></div></div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">시장분석</div>
+    <div class="value">3<span style="font-size:14px;color:var(--text2)">/15</span></div>
+    <div class="progress-bar"><div class="fill green" style="width:20%"></div></div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">고객발굴</div>
+    <div class="value">2<span style="font-size:14px;color:var(--text2)">/15</span></div>
+    <div class="progress-bar"><div class="fill yellow" style="width:13%"></div></div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">교육 수행</div>
+    <div class="value">3<span style="font-size:14px;color:var(--text2)">/30</span></div>
+    <div class="progress-bar"><div class="fill yellow" style="width:10%"></div></div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">데모/PoC</div>
+    <div class="value">0<span style="font-size:14px;color:var(--text2)">/25</span></div>
+    <div class="progress-bar"><div class="fill red" style="width:0%"></div></div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">마케팅 리드</div>
+    <div class="value">0<span style="font-size:14px;color:var(--text2)">/10</span></div>
+    <div class="progress-bar"><div class="fill red" style="width:0%"></div></div>
+  </div>
+`;
+</script>
+</body>
+</html>
+
