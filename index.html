@@ -125,7 +125,7 @@
 
 <div class="header">
   <h1><span>V&G</span> GTM Agent Dashboard</h1>
-  <div class="header-meta">Last updated: <span class="update-time">2026-04-07 10:00 KST</span></div>
+  <div class="header-meta">Last updated: <span class="update-time" id="lastUpdatedDisplay">2026-04-23 08:30 KST</span></div>
 </div>
 
 <div class="tab-bar" id="tabBar">
@@ -404,16 +404,26 @@
 <script>
 // ===== DATA (이 섹션을 업데이트하면 대시보드가 자동 반영됩니다) =====
 
-const LAST_UPDATED = '2026-04-07 10:00 KST';
+// 날짜 동적 포맷 (YYYY-MM-DD → 한국어)
+const LAST_UPDATED_RAW = '2026-04-23';
+const _d = new Date(LAST_UPDATED_RAW);
+const _days = ['일','월','화','수','목','금','토'];
+const LAST_UPDATED = `${LAST_UPDATED_RAW} (${_days[_d.getDay()]}) 08:30 KST`;
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('lastUpdatedDisplay');
+  if (el) el.textContent = LAST_UPDATED;
+});
 
 const agents = [
-  { name:'시장조사 에이전트', schedule:'일간 12:00', status:'green', lastDate:'2026-04-06', weekCount:5, note:'' },
-  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:30)', status:'green', lastDate:'2026-04-06', weekCount:1, note:'' },
-  { name:'글로벌 시장조사', schedule:'주간 (월 11:00)', status:'green', lastDate:'2026-04-06', weekCount:1, note:'원본 기사 링크 필수 규칙 적용 (04/06~)' },
-  { name:'지자체 리서치 에이전트', schedule:'일간 14:00 + 주간 월 10:00', status:'yellow', lastDate:'2026-03-18', weekCount:0, note:'경기도 3개 시군만 완료, 타 시도 미착수' },
-  { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-03-17', weekCount:0, note:'온디맨드 기반, 미팅 시 활성화' },
-  { name:'B2G 마케팅 에이전트', schedule:'주간 (월·화·목)', status:'green', lastDate:'2026-04-06', weekCount:2, note:'블로그 콘텐츠 자동 생성 가동 중' },
-  { name:'퍼스널 브랜딩 에이전트', schedule:'주간 (월)', status:'green', lastDate:'2026-04-06', weekCount:1, note:'' },
+  { name:'시장조사 에이전트', schedule:'평일 12:06', status:'green', lastDate:'2026-04-22', weekCount:6, note:'04/17(금) 누락 후 04/20 통합 복구 완료' },
+  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'green', lastDate:'2026-04-20', weekCount:3, note:'' },
+  { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'green', lastDate:'2026-04-20', weekCount:3, note:'' },
+  { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'green', lastDate:'2026-04-20', weekCount:3, note:'보수적 평가 v2.0 적용 중' },
+  { name:'지자체 리서치 에이전트', schedule:'온디맨드', status:'yellow', lastDate:'2026-03-18', weekCount:0, note:'경기도 3개 시군 완료, 영업방문 시 온디맨드 실행' },
+  { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-04-14', weekCount:0, note:'인구소멸지역 SE, 공모과제 지원 등 활발히 운영' },
+  { name:'B2G 마케팅 에이전트', schedule:'주간 (월·화·목)', status:'yellow', lastDate:'2026-04-20', weekCount:0, note:'⏸ 홀딩 중 (2026-04-20~, Jerry 요청)' },
+  { name:'퍼스널 브랜딩 에이전트', schedule:'주간 (월 10:07)', status:'green', lastDate:'2026-04-20', weekCount:4, note:'' },
+  { name:'영업 회의록 DB 동기화', schedule:'주간 (일 10:03)', status:'green', lastDate:'2026-04-19', weekCount:1, note:'신규 — sales-meeting-db 자동 동기화' },
   { name:'QA Verifier', schedule:'온디맨드', status:'gray', lastDate:'-', weekCount:0, note:'검증 요청 시 활성화' },
 ];
 
@@ -431,29 +441,34 @@ const feedbackLoops = [
 ];
 
 const recommendations = [
-  '[긴급] QGIS 4 호환성 테스트 시작 — QGIS 3.99 프리릴리즈 진행 중. V&G 솔루션 호환성 사전 테스트 필요 (글로벌 시장조사 04/06)',
-  '[단기] GeoAI 에이전트 PoC 기획 — LLM 기반 자율 공간분석(Autonomous GIS) 개념검증. Penn State LLM-Find 프레임워크 참고',
-  '지자체 리서치 확대 필요 — 경기도 3개 시군만 완료. 영업팀 방문 계획 기반 우선순위 지역 조사 착수 권고',
-  'GitHub 동기화 규칙 추가 — 에이전트 업데이트 시 대시보드 GitHub Pages 자동 반영 의무화 (04/07 적용)',
+  '[완료] GitHub Pages 자동 동기화 구현 — weekly-gtm-portal-update 태스크에 GitHub Pages 동시 배포 추가 (04/23 적용)',
+  '[진행중] 인구소멸지역 스페셜 제안 — 영양군·청송군 내부 검토 중, 리마인드 방문 필요',
+  '[긴급] GovTech 공모 최종 제출 (4/23 마감) — 시흥시 협의 완료, 최종본 검토 필요',
+  '[단기] 광주시 차관 보고 후속 영업 — 구별·시군·대시민 3단계 통합 제안 응답 대기 중',
+  '[모니터링] B2G 마케팅 에이전트 홀딩 중 (04/20~) — 재개 시점 결정 필요',
 ];
 
 const outputs = {
   '시장조사 (국내)': [
-    { date:'2026-04-06', name:'2026-04-06_시장조사.md' },
-    { date:'2026-04-03', name:'2026-04-03_시장조사.md' },
-    { date:'2026-04-02', name:'2026-04-02_시장조사.md' },
-    { date:'2026-04-01', name:'2026-04-01_시장조사.md' },
-    { date:'2026-03-31', name:'2026-03-31_시장조사.md' },
+    { date:'2026-04-22', name:'2026-04-22_시장조사.md' },
+    { date:'2026-04-21', name:'2026-04-21_시장조사.md' },
+    { date:'2026-04-20', name:'2026-04-20_시장조사.md' },
+    { date:'2026-04-16', name:'2026-04-16_시장조사.md' },
+    { date:'2026-04-13', name:'2026-04-13_시장조사.md' },
   ],
   '시장조사 (글로벌)': [
+    { date:'2026-04-20', name:'2026-04-20_global_market_report.md' },
+    { date:'2026-04-13', name:'2026-04-13_global_market_report.md' },
     { date:'2026-04-06', name:'2026-04-06_global_market_report.md' },
-    { date:'2026-03-30', name:'2026-03-30_global_market_report.md' },
-    { date:'2026-03-25', name:'2026-03-25_global_market_report.md' },
   ],
   '경쟁사 분석': [
+    { date:'2026-04-20', name:'2026-04-20_weekly_competitor_report.md' },
+    { date:'2026-04-13', name:'2026-04-13_weekly_competitor_report.md' },
     { date:'2026-04-06', name:'2026-04-06_weekly_competitor_report.md' },
-    { date:'2026-03-30', name:'2026-03-30_weekly_competitor_report.md' },
-    { date:'2026-03-23', name:'2026-03-23_weekly_competitor_report.md' },
+  ],
+  'IRIS 연구과제': [
+    { date:'2026-04-20', name:'iris_dashboard_20260420.html' },
+    { date:'2026-04-13', name:'iris_dashboard_20260413.html' },
   ],
   '지자체 리서치': [
     { date:'2026-03-18', name:'경기도/동두천시.md' },
@@ -461,23 +476,24 @@ const outputs = {
     { date:'2026-03-18', name:'경기도/연천군.md' },
   ],
   '영업지원': [
-    { date:'2026-03-17', name:'2026-03-17_평창군_미팅_후속조치.md' },
-    { date:'2026-03-17', name:'2026-03-17_지적관리_업무지원시스템_영업자료.md' },
+    { date:'2026-04-14', name:'인구소멸지역_영양군_제안서.md' },
+    { date:'2026-04-14', name:'인구소멸지역_청송군_제안서.md' },
+    { date:'2026-04-01', name:'구리시_현황대시보드_브리핑.md' },
   ],
   'B2G 마케팅': [
-    { date:'2026-04-06', name:'2026-04-06_weekly-plan.md' },
-    { date:'2026-04-02', name:'2026-04-02_thu_blog.md' },
-    { date:'2026-03-31', name:'2026-03-31_tue_blog.md' },
+    { date:'2026-04-20', name:'2026-04-20_weekly-plan.md' },
+    { date:'2026-04-16', name:'2026-04-16_thu_blog.md' },
+    { date:'2026-04-14', name:'2026-04-14_tue_blog.md' },
   ],
   '퍼스널 브랜딩': [
-    { date:'2026-04-06', name:'2026-04-06_weekly-plan.md' },
-    { date:'2026-04-03', name:'2026-04-03_thu_blog.md' },
-    { date:'2026-03-31', name:'2026-03-31_tue_blog.md' },
+    { date:'2026-04-20', name:'2026-04-20_weekly-branding-briefing.md' },
+    { date:'2026-04-13', name:'2026-04-13_weekly-branding-briefing.md' },
+    { date:'2026-04-06', name:'2026-04-06_weekly-branding-briefing.md' },
   ],
   '리포트 (주간)': [
-    { date:'2026-04-06', name:'GTM_주간리뷰_2026-04-06.md' },
-    { date:'2026-04-06', name:'2026-04-06_subagent_health_check.md' },
-    { date:'2026-03-30', name:'GTM_주간리뷰_2026-03-30.md' },
+    { date:'2026-04-20', name:'2026-04-20_subagent_health_check.md' },
+    { date:'2026-04-19', name:'2026-W16_주간업무리포트_타미_제리.html' },
+    { date:'2026-04-13', name:'2026-04-13_subagent_health_check.md' },
   ],
 };
 
