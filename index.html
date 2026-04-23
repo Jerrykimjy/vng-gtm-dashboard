@@ -382,7 +382,7 @@
 <!-- ==================== TAB 6: KPI 추적 ==================== -->
 <div class="tab-panel" id="kpi">
   <div class="card">
-    <h2>🎯 2026년 KPI 현황 (Q1 마감 기준)</h2>
+    <h2>🎯 2026년 KPI 현황 (Q2 진행중 · 4/1 ~ 4/23 기준)</h2>
     <div class="kpi-grid" id="kpiGrid">
       <!-- populated by JS -->
     </div>
@@ -391,7 +391,7 @@
   <div class="card">
     <h2>📈 KPI 상세</h2>
     <table>
-      <thead><tr><th>KPI 영역</th><th>지표</th><th>연간 목표</th><th>Q1 실적</th><th>달성률</th><th>비율</th><th>상태</th></tr></thead>
+      <thead><tr><th>KPI 영역</th><th>지표</th><th>연간 목표</th><th>Q2 실적</th><th>달성률</th><th>비율</th><th>상태</th></tr></thead>
       <tbody id="kpiTable">
         <!-- populated by JS -->
       </tbody>
@@ -428,16 +428,16 @@ const agents = [
 ];
 
 const feedbackLoops = [
-  { id:'F1', from:'시장조사', to:'전체', status:'pending', desc:'핵심 키워드 TOP 3' },
-  { id:'F2', from:'경쟁사분석', to:'영업지원', status:'pending', desc:'주의할 경쟁사 동향' },
-  { id:'F3', from:'영업지원', to:'시장조사', status:'pending', desc:'현장 언급 키워드' },
-  { id:'F4', from:'영업지원', to:'지자체리서치', status:'pending', desc:'미팅 결과 DB 업데이트' },
-  { id:'F5', from:'영업지원', to:'B2G마케팅', status:'pending', desc:'현장 피드백' },
-  { id:'F6', from:'지자체리서치', to:'B2G마케팅', status:'pending', desc:'마케팅 소재 추천' },
-  { id:'F7', from:'B2G마케팅', to:'퍼스널브랜딩', status:'pending', desc:'핵심 메시지 연계' },
-  { id:'F8', from:'퍼스널브랜딩', to:'B2G마케팅', status:'pending', desc:'SNS 트렌드 피드백' },
-  { id:'F9', from:'QA Verifier', to:'원본 에이전트', status:'pending', desc:'검증 결과' },
-  { id:'F10', from:'GTM Advisor', to:'전체', status:'pending', desc:'주간 종합 피드백' },
+  { id:'F1', from:'시장조사', to:'전체', status:'active', desc:'핵심 키워드 TOP 3', note:'리포트 상단 ## 핵심 키워드 섹션 자동 생성' },
+  { id:'F2', from:'경쟁사분석', to:'영업지원', status:'active', desc:'주의할 경쟁사 동향', note:'리포트 하단 ## 영업지원 전달사항 구현' },
+  { id:'F3', from:'영업지원', to:'시장조사', status:'partial', desc:'현장 언급 키워드', note:'후속조치 파일에 부분 반영 (정형화 미완)' },
+  { id:'F4', from:'영업지원', to:'지자체리서치', status:'active', desc:'미팅 결과 DB 업데이트', note:'sales-meeting-db 77개 시군 자동 누적' },
+  { id:'F5', from:'영업지원', to:'B2G마케팅', status:'partial', desc:'현장 피드백', note:'## 마케팅 피드백 섹션 부분적 구현' },
+  { id:'F6', from:'지자체리서치', to:'B2G마케팅', status:'partial', desc:'마케팅 소재 추천', note:'브리핑시트 ## 마케팅 소재 추천 일부 반영' },
+  { id:'F7', from:'B2G마케팅', to:'퍼스널브랜딩', status:'active', desc:'핵심 메시지 연계', note:'weekly-plan에 퍼스널 브랜딩 연계 소재 포함' },
+  { id:'F8', from:'퍼스널브랜딩', to:'B2G마케팅', status:'partial', desc:'SNS 트렌드 피드백', note:'브리핑 ## B2G 마케팅 피드백 부분 구현' },
+  { id:'F9', from:'QA Verifier', to:'원본 에이전트', status:'active', desc:'검증 결과', note:'원본 파일 하단 ## QA 검증 결과 자동 기록' },
+  { id:'F10', from:'GTM Advisor', to:'전체', status:'active', desc:'주간 종합 피드백', note:'주간 Health Check 리포트에 에이전트별 피드백 기록' },
 ];
 
 const recommendations = [
@@ -498,14 +498,75 @@ const outputs = {
 };
 
 const kpiData = [
-  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:3, ratio:10 },
-  { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:2, ratio:15 },
+  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:12, ratio:10 },
+  { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:8, ratio:15 },
   { area:'데모/PoC', metric:'표준 데모 작성 건수', target:10, actual:0, ratio:5 },
-  { area:'데모/PoC', metric:'데모/PoC 수행 건수', target:15, actual:0, ratio:5 },
-  { area:'교육', metric:'교육 수행 건수', target:30, actual:3, ratio:10 },
+  { area:'데모/PoC', metric:'데모/PoC 수행 건수', target:15, actual:3, ratio:5 },
+  { area:'교육', metric:'교육 수행 건수', target:30, actual:5, ratio:10 },
   { area:'교육', metric:'커리큘럼/콘텐츠 제작', target:10, actual:1, ratio:5 },
   { area:'교육', metric:'교육 후 추가 리드', target:5, actual:0, ratio:5 },
-  { area:'마케팅', metric:'마케팅 기반 리드 수', target:10, actual:0, ratio:5 },
+  { area:'마케팅', metric:'마케팅 기반 리드 수', target:10, actual:8, ratio:5 },
+];
+
+// KPI 업무 활동 상세 (각 지표를 달성한 구체적인 업무 활동)
+const kpiActivities = [
+  {
+    area:'시장분석', metric:'타겟 시장 분석 수',
+    activities:[
+      { label:'국내 시장조사 (일간 자동)', count:'15건+', period:'평일 12:06 자동실행, 04/01~04/22 누적', agent:'시장조사 에이전트' },
+      { label:'글로벌 시장조사 (주간)', count:'3건', period:'04/06(월), 04/13(월), 04/20(월)', agent:'시장조사 에이전트' },
+      { label:'경쟁사 분석 (주간)', count:'3건', period:'04/06(월), 04/13(월), 04/20(월)', agent:'경쟁사 분석 에이전트' },
+      { label:'IRIS 연구과제 모니터링', count:'2건', period:'04/13, 04/20 HTML 대시보드 생성', agent:'IRIS 모니터 에이전트' },
+    ]
+  },
+  {
+    area:'고객발굴', metric:'신규 사업/고객 리드 수',
+    activities:[
+      { label:'인구소멸지역 특화 제안 (영양군·청송군)', count:'2건', period:'04/14 제안서 작성', agent:'영업지원 에이전트' },
+      { label:'GovTech 공모과제 참여 리드 (시흥시)', count:'1건', period:'04/23 마감, 시흥시 협의 완료', agent:'GTM Advisor' },
+      { label:'광주시 차관 보고 후속 제안 (3단계)', count:'1건', period:'구별·시군·대시민 통합 제안 진행', agent:'영업지원 에이전트' },
+      { label:'경기·충청·영남 권역 현장 미팅 발굴', count:'4건', period:'기존 고객 후속 + 신규 접점 발굴', agent:'영업지원 에이전트' },
+    ]
+  },
+  {
+    area:'데모/PoC', metric:'표준 데모 작성 건수',
+    activities:[
+      { label:'표준 데모 시나리오 미작성', count:'0건', period:'Q2 우선순위 하향, 현장 데모 우선 대응', agent:'—' },
+    ]
+  },
+  {
+    area:'데모/PoC', metric:'데모/PoC 수행 건수',
+    activities:[
+      { label:'구리시 현황 대시보드 현장 시연', count:'1건', period:'04/01 브리핑시트 기반 시연', agent:'영업지원 에이전트' },
+      { label:'광주시 차관 보고 시연', count:'1건', period:'3단계 통합 솔루션 데모', agent:'GTM Advisor' },
+      { label:'순회 방문 현장 시연', count:'1건', period:'경기·충청 권역 방문 중 실시', agent:'영업지원 에이전트' },
+    ]
+  },
+  {
+    area:'교육', metric:'교육 수행 건수',
+    activities:[
+      { label:'Q2 공공기관 대상 교육 세션', count:'5건', period:'04/01~04/23 수행 완료', agent:'GTM Advisor' },
+    ]
+  },
+  {
+    area:'교육', metric:'커리큘럼/콘텐츠 제작',
+    activities:[
+      { label:'교육용 콘텐츠 패키지 제작', count:'1건', period:'Q2 신규 커리큘럼 1종', agent:'영업지원 에이전트' },
+    ]
+  },
+  {
+    area:'교육', metric:'교육 후 추가 리드',
+    activities:[
+      { label:'교육 참여 기관 → 리드 전환 추적 중', count:'0건', period:'추적 진행 중', agent:'GTM Advisor' },
+    ]
+  },
+  {
+    area:'마케팅', metric:'마케팅 기반 리드 수',
+    activities:[
+      { label:'B2G 블로그 포스팅 (홀딩 전)', count:'8건', period:'04/01~04/20, 주 2~3회 발행', agent:'B2G 마케팅 에이전트' },
+      { label:'Threads 퍼스널 브랜딩 콘텐츠', count:'4주분', period:'매주 월 자동 발행 (04/06~04/20)', agent:'퍼스널 브랜딩 에이전트' },
+    ]
+  },
 ];
 
 // ===== RENDER =====
@@ -541,13 +602,16 @@ recommendations.forEach((r,i) => {
 // Feedback Grid
 const fbGrid = document.getElementById('feedbackGrid');
 feedbackLoops.forEach(f => {
-  const st = f.status==='active'?'✅ 활성':'⏳ 미구현';
-  const cls = f.status==='active'?'green':'gray';
+  const st = f.status==='active'?'✅ 활성':f.status==='partial'?'🟡 부분구현':'⏳ 미구현';
+  const cls = f.status==='active'?'green':f.status==='partial'?'yellow':'gray';
   fbGrid.innerHTML += `
-    <div class="fb-item">
-      <span class="fb-id">${f.id}</span>
-      <div><span class="fb-dir">${f.from} → ${f.to}</span><br><span style="color:var(--text2)">${f.desc}</span></div>
-      <span class="fb-status"><span class="badge ${cls}">${st}</span></span>
+    <div class="fb-item" style="flex-direction:column;gap:6px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="fb-id">${f.id}</span>
+        <div><span class="fb-dir">${f.from} → ${f.to}</span><br><span style="color:var(--text2)">${f.desc}</span></div>
+        <span class="fb-status"><span class="badge ${cls}">${st}</span></span>
+      </div>
+      ${f.note?`<div style="font-size:11px;color:var(--text2);padding-left:38px;">💬 ${f.note}</div>`:''}
     </div>`;
 });
 
@@ -567,7 +631,7 @@ let weightedTotal = 0;
 
 kpiData.forEach(k => {
   const pct = Math.round((k.actual/k.target)*100);
-  const timePct = 25; // Q1 = 25%
+  const timePct = 31; // ~31% through 2026 (04/23 기준)
   const cls = pct>=timePct?'green':pct>=timePct*0.6?'yellow':'red';
   const statusLabel = cls==='green'?'🟢 순항':cls==='yellow'?'🟡 주의':'🔴 위험';
   weightedTotal += (pct/100)*k.ratio;
@@ -577,41 +641,63 @@ kpiData.forEach(k => {
     <td>${pct}%</td><td>${k.ratio}%</td><td><span class="badge ${cls}">${statusLabel}</span></td></tr>`;
 });
 
-// KPI summary cards
-const totalPct = Math.round(weightedTotal/0.6*100)/100; // normalized
+// KPI summary cards (동적 계산)
+const kpiSummary = {};
+kpiData.forEach(k => {
+  if(!kpiSummary[k.area]) kpiSummary[k.area] = { actual:0, target:0 };
+  kpiSummary[k.area].actual += k.actual;
+  kpiSummary[k.area].target += k.target;
+});
+const areaColors = { '시장분석':'green', '고객발굴':'yellow', '교육':'yellow', '데모/PoC':'yellow', '마케팅':'green' };
 kpiGrid.innerHTML = `
   <div class="kpi-card">
     <div class="label">가중 달성률</div>
     <div class="value" style="color:var(--accent2)">${weightedTotal.toFixed(1)}%</div>
     <div class="target">목표 60% 기준 (연간 비율 합)</div>
-    <div class="progress-bar"><div class="fill ${weightedTotal>=15?'green':weightedTotal>=9?'yellow':'red'}" style="width:${Math.min(weightedTotal/60*100,100)}%"></div></div>
+    <div class="progress-bar"><div class="fill ${weightedTotal>=18?'green':weightedTotal>=11?'yellow':'red'}" style="width:${Math.min(weightedTotal/60*100,100)}%"></div></div>
   </div>
-  <div class="kpi-card">
-    <div class="label">시장분석</div>
-    <div class="value">3<span style="font-size:14px;color:var(--text2)">/15</span></div>
-    <div class="progress-bar"><div class="fill green" style="width:20%"></div></div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">고객발굴</div>
-    <div class="value">2<span style="font-size:14px;color:var(--text2)">/15</span></div>
-    <div class="progress-bar"><div class="fill yellow" style="width:13%"></div></div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">교육 수행</div>
-    <div class="value">3<span style="font-size:14px;color:var(--text2)">/30</span></div>
-    <div class="progress-bar"><div class="fill yellow" style="width:10%"></div></div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">데모/PoC</div>
-    <div class="value">0<span style="font-size:14px;color:var(--text2)">/25</span></div>
-    <div class="progress-bar"><div class="fill red" style="width:0%"></div></div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">마케팅 리드</div>
-    <div class="value">0<span style="font-size:14px;color:var(--text2)">/10</span></div>
-    <div class="progress-bar"><div class="fill red" style="width:0%"></div></div>
-  </div>
+  ${Object.entries(kpiSummary).map(([area, v]) => {
+    const pct = Math.round(v.actual/v.target*100);
+    const cls = pct>=31?'green':pct>=18?'yellow':'red';
+    return `<div class="kpi-card">
+      <div class="label">${area}</div>
+      <div class="value">${v.actual}<span style="font-size:14px;color:var(--text2)">/${v.target}</span></div>
+      <div class="target">${pct}% 달성</div>
+      <div class="progress-bar"><div class="fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div>
+    </div>`;
+  }).join('')}
 `;
+
+// KPI 활동 상세 렌더링
+const kpiCard = document.querySelector('#kpi .card:last-of-type');
+const actDiv = document.createElement('div');
+actDiv.innerHTML = '<h2 style="font-size:16px;font-weight:600;margin:24px 0 12px;display:flex;align-items:center;gap:8px;">📋 업무 활동 상세 내역</h2>';
+
+kpiActivities.forEach(item => {
+  const rows = item.activities.map(a => `
+    <tr>
+      <td style="font-size:12px;">${a.label}</td>
+      <td style="font-size:12px;font-weight:600;color:var(--accent2)">${a.count}</td>
+      <td style="font-size:12px;color:var(--text2)">${a.period}</td>
+      <td style="font-size:12px;color:var(--cyan)">${a.agent}</td>
+    </tr>`).join('');
+
+  actDiv.innerHTML += `
+    <div style="background:var(--surface2);border-radius:8px;padding:12px 16px;margin-bottom:10px;">
+      <div style="font-size:13px;font-weight:600;color:var(--cyan);margin-bottom:8px;">${item.area} — ${item.metric}</div>
+      <table style="width:100%;font-size:13px;">
+        <thead><tr>
+          <th style="text-align:left;color:var(--text2);font-size:11px;padding:4px 8px;border-bottom:1px solid var(--border);">활동 내용</th>
+          <th style="text-align:left;color:var(--text2);font-size:11px;padding:4px 8px;border-bottom:1px solid var(--border);">건수</th>
+          <th style="text-align:left;color:var(--text2);font-size:11px;padding:4px 8px;border-bottom:1px solid var(--border);">기간/비고</th>
+          <th style="text-align:left;color:var(--text2);font-size:11px;padding:4px 8px;border-bottom:1px solid var(--border);">담당 에이전트</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+});
+
+document.getElementById('kpi').appendChild(actDiv);
 </script>
 </body>
 </html>
