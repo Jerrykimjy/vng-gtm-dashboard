@@ -382,7 +382,7 @@
 <!-- ==================== TAB 6: KPI 추적 ==================== -->
 <div class="tab-panel" id="kpi">
   <div class="card">
-    <h2>🎯 2026년 KPI 현황 (Q2 진행중 · 4/1 ~ 4/23 기준)</h2>
+    <h2>🎯 2026년 KPI 현황 (Q2 진행중 · 4/1 ~ 4/27 기준)</h2>
     <div class="kpi-grid" id="kpiGrid">
       <!-- populated by JS -->
     </div>
@@ -405,7 +405,7 @@
 // ===== DATA (이 섹션을 업데이트하면 대시보드가 자동 반영됩니다) =====
 
 // 날짜 동적 포맷 (YYYY-MM-DD → 한국어)
-const LAST_UPDATED_RAW = '2026-04-23';
+const LAST_UPDATED_RAW = '2026-04-27';
 const _d = new Date(LAST_UPDATED_RAW);
 const _days = ['일','월','화','수','목','금','토'];
 const LAST_UPDATED = `${LAST_UPDATED_RAW} (${_days[_d.getDay()]}) 08:30 KST`;
@@ -415,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const agents = [
-  { name:'시장조사 에이전트', schedule:'평일 12:06', status:'green', lastDate:'2026-04-22', weekCount:6, note:'04/17(금) 누락 후 04/20 통합 복구 완료' },
+  { name:'시장조사 에이전트', schedule:'평일 12:06', status:'green', lastDate:'2026-04-27', weekCount:5, note:'04/21~04/27 5건 생성 완료' },
   { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'green', lastDate:'2026-04-20', weekCount:3, note:'' },
   { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'green', lastDate:'2026-04-20', weekCount:3, note:'' },
   { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'green', lastDate:'2026-04-20', weekCount:3, note:'보수적 평가 v2.0 적용 중' },
@@ -423,7 +423,7 @@ const agents = [
   { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-04-14', weekCount:0, note:'인구소멸지역 SE, 공모과제 지원 등 활발히 운영' },
   { name:'B2G 마케팅 에이전트', schedule:'주간 (월·화·목)', status:'yellow', lastDate:'2026-04-20', weekCount:0, note:'⏸ 홀딩 중 (2026-04-20~, Jerry 요청)' },
   { name:'퍼스널 브랜딩 에이전트', schedule:'주간 (월 10:07)', status:'green', lastDate:'2026-04-20', weekCount:4, note:'' },
-  { name:'영업 회의록 DB 동기화', schedule:'주간 (일 10:03)', status:'green', lastDate:'2026-04-19', weekCount:1, note:'신규 — sales-meeting-db 자동 동기화' },
+  { name:'영업 회의록 DB 동기화', schedule:'주간 (일 10:03)', status:'green', lastDate:'2026-04-26', weekCount:2, note:'신규 — sales-meeting-db 자동 동기화' },
   { name:'QA Verifier', schedule:'온디맨드', status:'gray', lastDate:'-', weekCount:0, note:'검증 요청 시 활성화' },
 ];
 
@@ -450,11 +450,11 @@ const recommendations = [
 
 const outputs = {
   '시장조사 (국내)': [
+    { date:'2026-04-27', name:'2026-04-27_시장조사.md' },
+    { date:'2026-04-23', name:'2026-04-23_시장조사.md' },
     { date:'2026-04-22', name:'2026-04-22_시장조사.md' },
     { date:'2026-04-21', name:'2026-04-21_시장조사.md' },
     { date:'2026-04-20', name:'2026-04-20_시장조사.md' },
-    { date:'2026-04-16', name:'2026-04-16_시장조사.md' },
-    { date:'2026-04-13', name:'2026-04-13_시장조사.md' },
   ],
   '시장조사 (글로벌)': [
     { date:'2026-04-20', name:'2026-04-20_global_market_report.md' },
@@ -498,7 +498,7 @@ const outputs = {
 };
 
 const kpiData = [
-  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:12, ratio:10 },
+  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:23, ratio:10 },
   { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:8, ratio:15 },
   { area:'데모/PoC', metric:'표준 데모 작성 건수', target:10, actual:0, ratio:5 },
   { area:'데모/PoC', metric:'데모/PoC 수행 건수', target:15, actual:3, ratio:5 },
@@ -513,7 +513,7 @@ const kpiActivities = [
   {
     area:'시장분석', metric:'타겟 시장 분석 수',
     activities:[
-      { label:'국내 시장조사 (일간 자동)', count:'15건+', period:'평일 12:06 자동실행, 04/01~04/22 누적', agent:'시장조사 에이전트' },
+      { label:'국내 시장조사 (일간 자동)', count:'17건', period:'평일 12:06 자동실행, 04/01~04/27 누적', agent:'시장조사 에이전트' },
       { label:'글로벌 시장조사 (주간)', count:'3건', period:'04/06(월), 04/13(월), 04/20(월)', agent:'시장조사 에이전트' },
       { label:'경쟁사 분석 (주간)', count:'3건', period:'04/06(월), 04/13(월), 04/20(월)', agent:'경쟁사 분석 에이전트' },
       { label:'IRIS 연구과제 모니터링', count:'2건', period:'04/13, 04/20 HTML 대시보드 생성', agent:'IRIS 모니터 에이전트' },
