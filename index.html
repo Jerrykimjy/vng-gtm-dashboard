@@ -167,12 +167,7 @@
       │    ┌──────────┐                 │    ┌───────────┐
       ├───▶│지자체리서치│────────────────┘───▶│ B2G마케팅  │
       │    │(일간+주간) │                     │ (온디맨드)  │
-      │    └──────────┘                     └─────┬─────┘
-      │                                           │
-      │    ┌───────────┐                          │
-      └───▶│퍼스널브랜딩│◀─────────────────────────┘
-           │ (주간+온디) │
-           └───────────┘
+      └────└──────────┘                     └───────────┘
 
            ┌───────────────────────────────┐
            │      GTM Advisor (총괄)        │
@@ -207,8 +202,6 @@
         <tr><td>F4</td><td>영업지원 → 지자체리서치</td><td>방문 후 미팅 결과, DB 업데이트</td><td>미팅 후속조치 <code>## 지자체 리서치 업데이트</code></td></tr>
         <tr><td>F5</td><td>영업지원 → B2G마케팅</td><td>현장 피드백, 고객 니즈 변화</td><td>영업자료 <code>## 마케팅 피드백</code></td></tr>
         <tr><td>F6</td><td>지자체리서치 → B2G마케팅</td><td>지자체 핵심 이슈, 소재 추천</td><td>브리핑 시트 <code>## 마케팅 소재 추천</code></td></tr>
-        <tr><td>F7</td><td>B2G마케팅 → 퍼스널브랜딩</td><td>이번 달 마케팅 핵심 메시지</td><td>계획 파일 <code>## 퍼스널 브랜딩 연계 소재</code></td></tr>
-        <tr><td>F8</td><td>퍼스널브랜딩 → B2G마케팅</td><td>Threads 반응 좋은 주제, SNS 트렌드</td><td>브리핑 <code>## B2G 마케팅 피드백</code></td></tr>
         <tr><td>F9</td><td>QA Verifier → 원본</td><td>수치 오류, 출처 미확인 항목</td><td>원본 파일 하단 <code>## QA 검증 결과</code></td></tr>
         <tr><td>F10</td><td>GTM Advisor → 전체</td><td>주간 종합 피드백, 전략 방향 조정</td><td>주간 리뷰에 에이전트별 피드백</td></tr>
       </tbody>
@@ -226,7 +219,6 @@
         <tr><td>시장조사 리포트 생성 (매일 12:00)</td><td>영업 기회 추출 + 경쟁사 교차 참조</td><td>영업지원, 경쟁사 분석</td></tr>
         <tr><td>경쟁사 분석 리포트 생성 (매주 월 09:00)</td><td>배틀카드 갱신 필요 여부 체크</td><td>영업지원</td></tr>
         <tr><td>지자체 리서치 주간 보고 (매주 월 10:00)</td><td>발주 현황 기반 영업 기회 업데이트</td><td>영업지원</td></tr>
-        <tr><td>주간 콘텐츠 계획 발행 (매주 월)</td><td>Threads 초안 작성 시작</td><td>퍼스널 브랜딩</td></tr>
         <tr><td>GTM Advisor 주간 리뷰 (매주 월)</td><td>전체 에이전트 Health Check</td><td>GTM Advisor</td></tr>
       </tbody>
     </table>
@@ -241,7 +233,7 @@
         <tr><td>Jerry가 특정 지자체 조사 요청</td><td>심층 조사 + 영업 패키지 구성</td><td>지자체 리서치, 영업지원</td></tr>
         <tr><td>신규 파트너 협업 논의</td><td>폴더 생성 + 조사 리포트</td><td>GTM Advisor</td></tr>
         <tr><td>입찰 공고 감지</td><td>Go/No-Go 분석 + 경쟁 환경 분석</td><td>GTM Advisor, 경쟁사 분석</td></tr>
-        <tr><td>마케팅 캠페인 기획 요청</td><td>캠페인 계획 + Threads 연계</td><td>B2G 마케팅, 퍼스널 브랜딩</td></tr>
+        <tr><td>마케팅 캠페인 기획 요청</td><td>캠페인 계획 수립</td><td>B2G 마케팅</td></tr>
         <tr><td>주요 문서 최종 작성 완료</td><td>QA 검증 수행</td><td>QA Verifier</td></tr>
       </tbody>
     </table>
@@ -323,10 +315,6 @@
 │   ├── <span class="folder">콘텐츠/</span>
 │   └── <span class="folder">캠페인/</span>
 │
-├── <span class="folder">05_퍼스널_브랜딩/</span>               <span class="desc">← Personal Branding Agent</span>
-│   ├── <span class="folder">운영계획/</span>
-│   └── <span class="folder">Threads_콘텐츠/</span>
-│
 ├── <span class="folder">06_파트너_협업/</span>                 <span class="desc">← 파트너사별 하위 폴더</span>
 │   └── <span class="folder">[파트너명]/</span>
 │
@@ -348,7 +336,6 @@
         <tr><td>VnG_솔루션_레퍼런스_DB.xlsx</td><td>GTM Advisor</td><td>신규 레퍼런스 확정 시</td></tr>
         <tr><td>경쟁사_프로파일_DB.xlsx</td><td>경쟁사 분석</td><td>경쟁사 동향 변화 시</td></tr>
         <tr><td>lead_db.xlsx</td><td>영업지원</td><td>신규 리드 발굴, 상태 변경</td></tr>
-        <tr><td>content_calendar.xlsx</td><td>퍼스널 브랜딩</td><td>콘텐츠 계획 수립/업데이트</td></tr>
         <tr><td>edu_demo_tracker.xlsx</td><td>GTM Advisor</td><td>교육/데모 수행 후</td></tr>
       </tbody>
     </table>
@@ -382,7 +369,7 @@
 <!-- ==================== TAB 6: KPI 추적 ==================== -->
 <div class="tab-panel" id="kpi">
   <div class="card">
-    <h2>🎯 2026년 KPI 현황 (Q2 진행중 · 4/1 ~ 4/27 기준)</h2>
+    <h2>🎯 2026년 KPI 현황 (Q2 진행중 · 4/1 ~ 5/4 기준)</h2>
     <div class="kpi-grid" id="kpiGrid">
       <!-- populated by JS -->
     </div>
@@ -405,7 +392,7 @@
 // ===== DATA (이 섹션을 업데이트하면 대시보드가 자동 반영됩니다) =====
 
 // 날짜 동적 포맷 (YYYY-MM-DD → 한국어)
-const LAST_UPDATED_RAW = '2026-04-27';
+const LAST_UPDATED_RAW = '2026-05-04';
 const _d = new Date(LAST_UPDATED_RAW);
 const _days = ['일','월','화','수','목','금','토'];
 const LAST_UPDATED = `${LAST_UPDATED_RAW} (${_days[_d.getDay()]}) 08:30 KST`;
@@ -415,14 +402,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const agents = [
-  { name:'시장조사 에이전트', schedule:'평일 12:06', status:'green', lastDate:'2026-04-27', weekCount:5, note:'04/21~04/27 5건 생성 완료' },
-  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'green', lastDate:'2026-04-20', weekCount:3, note:'' },
-  { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'green', lastDate:'2026-04-20', weekCount:3, note:'' },
-  { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'green', lastDate:'2026-04-20', weekCount:3, note:'보수적 평가 v2.0 적용 중' },
+  { name:'시장조사 에이전트', schedule:'평일 12:06', status:'green', lastDate:'2026-04-28', weekCount:2, note:'04/27~04/28 2건 생성 완료' },
+  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'green', lastDate:'2026-04-26', weekCount:1, note:'04/26 주간 리포트' },
+  { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'green', lastDate:'2026-04-27', weekCount:1, note:'04/27 글로벌 리포트' },
+  { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'green', lastDate:'2026-04-27', weekCount:1, note:'04/27 대시보드 생성, 보수적 평가 v2.0 적용 중' },
   { name:'지자체 리서치 에이전트', schedule:'온디맨드', status:'yellow', lastDate:'2026-03-18', weekCount:0, note:'경기도 3개 시군 완료, 영업방문 시 온디맨드 실행' },
   { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-04-14', weekCount:0, note:'인구소멸지역 SE, 공모과제 지원 등 활발히 운영' },
   { name:'B2G 마케팅 에이전트', schedule:'주간 (월·화·목)', status:'yellow', lastDate:'2026-04-20', weekCount:0, note:'⏸ 홀딩 중 (2026-04-20~, Jerry 요청)' },
-  { name:'퍼스널 브랜딩 에이전트', schedule:'주간 (월 10:07)', status:'green', lastDate:'2026-04-20', weekCount:4, note:'' },
   { name:'영업 회의록 DB 동기화', schedule:'주간 (일 10:03)', status:'green', lastDate:'2026-04-26', weekCount:2, note:'신규 — sales-meeting-db 자동 동기화' },
   { name:'QA Verifier', schedule:'온디맨드', status:'gray', lastDate:'-', weekCount:0, note:'검증 요청 시 활성화' },
 ];
@@ -434,8 +420,6 @@ const feedbackLoops = [
   { id:'F4', from:'영업지원', to:'지자체리서치', status:'active', desc:'미팅 결과 DB 업데이트', note:'sales-meeting-db 77개 시군 자동 누적' },
   { id:'F5', from:'영업지원', to:'B2G마케팅', status:'partial', desc:'현장 피드백', note:'## 마케팅 피드백 섹션 부분적 구현' },
   { id:'F6', from:'지자체리서치', to:'B2G마케팅', status:'partial', desc:'마케팅 소재 추천', note:'브리핑시트 ## 마케팅 소재 추천 일부 반영' },
-  { id:'F7', from:'B2G마케팅', to:'퍼스널브랜딩', status:'active', desc:'핵심 메시지 연계', note:'weekly-plan에 퍼스널 브랜딩 연계 소재 포함' },
-  { id:'F8', from:'퍼스널브랜딩', to:'B2G마케팅', status:'partial', desc:'SNS 트렌드 피드백', note:'브리핑 ## B2G 마케팅 피드백 부분 구현' },
   { id:'F9', from:'QA Verifier', to:'원본 에이전트', status:'active', desc:'검증 결과', note:'원본 파일 하단 ## QA 검증 결과 자동 기록' },
   { id:'F10', from:'GTM Advisor', to:'전체', status:'active', desc:'주간 종합 피드백', note:'주간 Health Check 리포트에 에이전트별 피드백 기록' },
 ];
@@ -450,23 +434,24 @@ const recommendations = [
 
 const outputs = {
   '시장조사 (국내)': [
+    { date:'2026-04-28', name:'2026-04-28_시장조사.md' },
     { date:'2026-04-27', name:'2026-04-27_시장조사.md' },
     { date:'2026-04-23', name:'2026-04-23_시장조사.md' },
     { date:'2026-04-22', name:'2026-04-22_시장조사.md' },
     { date:'2026-04-21', name:'2026-04-21_시장조사.md' },
-    { date:'2026-04-20', name:'2026-04-20_시장조사.md' },
   ],
   '시장조사 (글로벌)': [
+    { date:'2026-04-27', name:'2026-04-27_global_market_report.md' },
     { date:'2026-04-20', name:'2026-04-20_global_market_report.md' },
     { date:'2026-04-13', name:'2026-04-13_global_market_report.md' },
-    { date:'2026-04-06', name:'2026-04-06_global_market_report.md' },
   ],
   '경쟁사 분석': [
+    { date:'2026-04-26', name:'2026-04-26_weekly_competitor_report.md' },
     { date:'2026-04-20', name:'2026-04-20_weekly_competitor_report.md' },
     { date:'2026-04-13', name:'2026-04-13_weekly_competitor_report.md' },
-    { date:'2026-04-06', name:'2026-04-06_weekly_competitor_report.md' },
   ],
   'IRIS 연구과제': [
+    { date:'2026-04-27', name:'iris_dashboard_20260427.html' },
     { date:'2026-04-20', name:'iris_dashboard_20260420.html' },
     { date:'2026-04-13', name:'iris_dashboard_20260413.html' },
   ],
@@ -485,20 +470,15 @@ const outputs = {
     { date:'2026-04-16', name:'2026-04-16_thu_blog.md' },
     { date:'2026-04-14', name:'2026-04-14_tue_blog.md' },
   ],
-  '퍼스널 브랜딩': [
-    { date:'2026-04-20', name:'2026-04-20_weekly-branding-briefing.md' },
-    { date:'2026-04-13', name:'2026-04-13_weekly-branding-briefing.md' },
-    { date:'2026-04-06', name:'2026-04-06_weekly-branding-briefing.md' },
-  ],
   '리포트 (주간)': [
     { date:'2026-04-20', name:'2026-04-20_subagent_health_check.md' },
-    { date:'2026-04-19', name:'2026-W16_주간업무리포트_타미_제리.html' },
+    { date:'2026-04-19', name:'2026-W16_주간업무리포트_타미_제리.html', path:'computer:///Users/jerrykim/Documents/GTM/agents/reports/weekly-work-manager/2026-W16_주간업무리포트_타미_제리.html' },
     { date:'2026-04-13', name:'2026-04-13_subagent_health_check.md' },
   ],
 };
 
 const kpiData = [
-  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:23, ratio:10 },
+  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:26, ratio:10 },
   { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:8, ratio:15 },
   { area:'데모/PoC', metric:'표준 데모 작성 건수', target:10, actual:0, ratio:5 },
   { area:'데모/PoC', metric:'데모/PoC 수행 건수', target:15, actual:3, ratio:5 },
@@ -513,10 +493,10 @@ const kpiActivities = [
   {
     area:'시장분석', metric:'타겟 시장 분석 수',
     activities:[
-      { label:'국내 시장조사 (일간 자동)', count:'17건', period:'평일 12:06 자동실행, 04/01~04/27 누적', agent:'시장조사 에이전트' },
-      { label:'글로벌 시장조사 (주간)', count:'3건', period:'04/06(월), 04/13(월), 04/20(월)', agent:'시장조사 에이전트' },
-      { label:'경쟁사 분석 (주간)', count:'3건', period:'04/06(월), 04/13(월), 04/20(월)', agent:'경쟁사 분석 에이전트' },
-      { label:'IRIS 연구과제 모니터링', count:'2건', period:'04/13, 04/20 HTML 대시보드 생성', agent:'IRIS 모니터 에이전트' },
+      { label:'국내 시장조사 (일간 자동)', count:'18건', period:'평일 12:06 자동실행, 04/01~04/28 누적', agent:'시장조사 에이전트' },
+      { label:'글로벌 시장조사 (주간)', count:'4건', period:'04/06, 04/13, 04/20, 04/27', agent:'시장조사 에이전트' },
+      { label:'경쟁사 분석 (주간)', count:'4건', period:'04/06, 04/13, 04/20, 04/26', agent:'경쟁사 분석 에이전트' },
+      { label:'IRIS 연구과제 모니터링', count:'3건', period:'04/13, 04/20, 04/27 HTML 대시보드 생성', agent:'IRIS 모니터 에이전트' },
     ]
   },
   {
@@ -563,7 +543,7 @@ const kpiActivities = [
   {
     area:'마케팅', metric:'마케팅 기반 리드 수',
     activities:[
-      { label:'B2G 블로그 포스팅 (홀딩 전)', count:'8건', period:'04/01~04/20, 주 2~3회 발행', agent:'B2G 마케팅 에이전트' },
+      { label:'B2G 블로그 포스팅 (홀딩 전)', count:'8건', period:'04/02~04/20, 주 2~3회 발행 후 04/20부터 홀딩', agent:'B2G 마케팅 에이전트' },
     ]
   },
 ];
@@ -614,11 +594,30 @@ feedbackLoops.forEach(f => {
     </div>`;
 });
 
+// 카테고리별 파일 경로 접두사 (computer:// 로컬 열기)
+const outputPaths = {
+  '시장조사 (국내)':  'computer:///Users/jerrykim/Documents/GTM/market-research/',
+  '시장조사 (글로벌)': 'computer:///Users/jerrykim/Documents/GTM/global-market-research/',
+  '경쟁사 분석':      'computer:///Users/jerrykim/Documents/GTM/competitor-analysis/',
+  'IRIS 연구과제':    'computer:///Users/jerrykim/Documents/GTM/agents/iris-monitor/',
+  '지자체 리서치':    'computer:///Users/jerrykim/Documents/GTM/02_지자체_리서치/',
+  '영업지원':         'computer:///Users/jerrykim/Documents/GTM/agents/reports/sales-support/',
+  'B2G 마케팅':       'computer:///Users/jerrykim/Documents/GTM/blog-drafts/',
+  '리포트 (주간)':    'computer:///Users/jerrykim/Documents/GTM/agents/reports/',
+};
+
 // Outputs
 const outDiv = document.getElementById('outputsList');
 Object.entries(outputs).forEach(([cat, items]) => {
-  let html = `<h3>${cat}</h3><table><thead><tr><th>날짜</th><th>파일명</th></tr></thead><tbody>`;
-  items.forEach(it => { html += `<tr><td>${it.date}</td><td>${it.name}</td></tr>`; });
+  const baseUrl = outputPaths[cat] || '';
+  let html = `<h3>${cat}</h3><table><thead><tr><th>날짜</th><th>파일명</th><th style="width:80px;text-align:center">열기</th></tr></thead><tbody>`;
+  items.forEach(it => {
+    const fullUrl = it.path ? it.path : (baseUrl ? baseUrl + it.name : null);
+    const btn = fullUrl
+      ? `<a href="${fullUrl}" style="color:var(--accent2);text-decoration:none;font-size:11px;padding:2px 10px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);border-radius:4px;white-space:nowrap;">📂 열기</a>`
+      : '<span style="color:var(--text2)">—</span>';
+    html += `<tr><td>${it.date}</td><td>${it.name}</td><td style="text-align:center">${btn}</td></tr>`;
+  });
   html += '</tbody></table>';
   outDiv.innerHTML += html;
 });
