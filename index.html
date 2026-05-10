@@ -125,7 +125,7 @@
 
 <div class="header">
   <h1><span>V&G</span> GTM Agent Dashboard</h1>
-  <div class="header-meta">Last updated: <span class="update-time" id="lastUpdatedDisplay">2026-04-23 08:30 KST</span></div>
+  <div class="header-meta">Last updated: <span class="update-time" id="lastUpdatedDisplay">2026-05-11 08:30 KST</span></div>
 </div>
 
 <div class="tab-bar" id="tabBar">
@@ -369,7 +369,7 @@
 <!-- ==================== TAB 6: KPI 추적 ==================== -->
 <div class="tab-panel" id="kpi">
   <div class="card">
-    <h2>🎯 2026년 KPI 현황 (Q2 진행중 · 4/1 ~ 5/4 기준)</h2>
+    <h2>🎯 2026년 KPI 현황 (Q2 진행중 · 4/1 ~ 5/11 기준)</h2>
     <div class="kpi-grid" id="kpiGrid">
       <!-- populated by JS -->
     </div>
@@ -392,7 +392,7 @@
 // ===== DATA (이 섹션을 업데이트하면 대시보드가 자동 반영됩니다) =====
 
 // 날짜 동적 포맷 (YYYY-MM-DD → 한국어)
-const LAST_UPDATED_RAW = '2026-05-04';
+const LAST_UPDATED_RAW = '2026-05-11';
 const _d = new Date(LAST_UPDATED_RAW);
 const _days = ['일','월','화','수','목','금','토'];
 const LAST_UPDATED = `${LAST_UPDATED_RAW} (${_days[_d.getDay()]}) 08:30 KST`;
@@ -402,15 +402,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const agents = [
-  { name:'시장조사 에이전트', schedule:'평일 12:06', status:'green', lastDate:'2026-04-28', weekCount:2, note:'04/27~04/28 2건 생성 완료' },
-  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'green', lastDate:'2026-04-26', weekCount:1, note:'04/26 주간 리포트' },
-  { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'green', lastDate:'2026-04-27', weekCount:1, note:'04/27 글로벌 리포트' },
-  { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'green', lastDate:'2026-04-27', weekCount:1, note:'04/27 대시보드 생성, 보수적 평가 v2.0 적용 중' },
-  { name:'지자체 리서치 에이전트', schedule:'온디맨드', status:'yellow', lastDate:'2026-03-18', weekCount:0, note:'경기도 3개 시군 완료, 영업방문 시 온디맨드 실행' },
-  { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-04-14', weekCount:0, note:'인구소멸지역 SE, 공모과제 지원 등 활발히 운영' },
-  { name:'B2G 마케팅 에이전트', schedule:'주간 (월·화·목)', status:'yellow', lastDate:'2026-04-20', weekCount:0, note:'⏸ 홀딩 중 (2026-04-20~, Jerry 요청)' },
-  { name:'영업 회의록 DB 동기화', schedule:'주간 (일 10:03)', status:'green', lastDate:'2026-04-26', weekCount:2, note:'신규 — sales-meeting-db 자동 동기화' },
-  { name:'QA Verifier', schedule:'온디맨드', status:'gray', lastDate:'-', weekCount:0, note:'검증 요청 시 활성화' },
+  { name:'시장조사 에이전트', schedule:'평일 12:06', status:'green', lastDate:'2026-05-08', weekCount:4, note:'5/5~5/8 4건 정상 누적, 평일 데일리 안정 동작' },
+  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'green', lastDate:'2026-05-04', weekCount:1, note:'05/04 주간 리포트 정상 생성' },
+  { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'green', lastDate:'2026-05-06', weekCount:1, note:'05/06 글로벌 리포트 생성' },
+  { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'green', lastDate:'2026-05-05', weekCount:1, note:'05/05 대시보드 정상 생성' },
+  { name:'지자체 리서치 에이전트', schedule:'온디맨드', status:'yellow', lastDate:'2026-03-18', weekCount:0, note:'경기도 3개 시군 완료, Q2 신규 리서치 대기' },
+  { name:'영업지원 에이전트', schedule:'온디맨드', status:'yellow', lastDate:'2026-04-14', weekCount:0, note:'5/4~5/10 신규 영업자료 산출물 없음, 미팅 19건 누적' },
+  { name:'B2G 마케팅 에이전트', schedule:'주간 (월·화·목)', status:'yellow', lastDate:'2026-04-20', weekCount:0, note:'⏸ 홀딩 5주차 (2026-04-20~, Jerry 결정 대기)' },
+  { name:'퍼스널 브랜딩', schedule:'주간 (월 10:07)', status:'green', lastDate:'2026-05-06', weekCount:1, note:'05/06 콘텐츠 브리핑 생성' },
+  { name:'영업 회의록 DB 동기화', schedule:'주간 (일 10:03)', status:'green', lastDate:'2026-05-10', weekCount:1, note:'5/10 weekly sync 완료, Q2 미팅 19건 누적' },
+  { name:'QA Verifier', schedule:'온디맨드', status:'gray', lastDate:'2026-04-07', weekCount:0, note:'검증 요청 시 활성화' },
 ];
 
 const feedbackLoops = [
@@ -425,32 +426,35 @@ const feedbackLoops = [
 ];
 
 const recommendations = [
-  '[완료] GitHub Pages 자동 동기화 구현 — weekly-gtm-portal-update 태스크에 GitHub Pages 동시 배포 추가 (04/23 적용)',
-  '[진행중] 인구소멸지역 스페셜 제안 — 영양군·청송군 내부 검토 중, 리마인드 방문 필요',
-  '[긴급] GovTech 공모 최종 제출 (4/23 마감) — 시흥시 협의 완료, 최종본 검토 필요',
+  '[긴급] 5/4 위클리 일괄 실패 그룹 진단 — competitor/personal-branding/global/iris/resource-report 등 5/4 04:16~04:25 UTC 클러스터로 산출물 누락, MCP/인증 만료 가능성',
+  '[모니터링] B2G 마케팅 에이전트 홀딩 5주차 (04/20~) — 외부 콘텐츠 발행 공백 누적, Jerry 재개 결정 필요',
+  '[진행중] sales-meeting-db 19개 기관 Q2 누적 — 영양군·청송군 인구소멸 제안 후속 진행 중',
   '[단기] 광주시 차관 보고 후속 영업 — 구별·시군·대시민 3단계 통합 제안 응답 대기 중',
-  '[모니터링] B2G 마케팅 에이전트 홀딩 중 (04/20~) — 재개 시점 결정 필요',
+  '[관찰] 시장조사 데일리만 안정 동작, 위클리 그룹 전체가 5/4 동시 결손 → 위클리 실행 환경 점검 필요',
 ];
 
 const outputs = {
   '시장조사 (국내)': [
+    { date:'2026-05-08', name:'2026-05-08_시장조사.md' },
+    { date:'2026-05-07', name:'2026-05-07_시장조사.md' },
+    { date:'2026-05-06', name:'2026-05-06_시장조사.md' },
+    { date:'2026-05-05', name:'2026-05-05_시장조사.md' },
     { date:'2026-04-28', name:'2026-04-28_시장조사.md' },
-    { date:'2026-04-27', name:'2026-04-27_시장조사.md' },
-    { date:'2026-04-23', name:'2026-04-23_시장조사.md' },
-    { date:'2026-04-22', name:'2026-04-22_시장조사.md' },
-    { date:'2026-04-21', name:'2026-04-21_시장조사.md' },
   ],
   '시장조사 (글로벌)': [
+    { date:'2026-05-06', name:'2026-05-06_global_market_report.md' },
     { date:'2026-04-27', name:'2026-04-27_global_market_report.md' },
     { date:'2026-04-20', name:'2026-04-20_global_market_report.md' },
     { date:'2026-04-13', name:'2026-04-13_global_market_report.md' },
   ],
   '경쟁사 분석': [
+    { date:'2026-05-04', name:'2026-05-04_weekly_competitor_report.md' },
     { date:'2026-04-26', name:'2026-04-26_weekly_competitor_report.md' },
     { date:'2026-04-20', name:'2026-04-20_weekly_competitor_report.md' },
     { date:'2026-04-13', name:'2026-04-13_weekly_competitor_report.md' },
   ],
   'IRIS 연구과제': [
+    { date:'2026-05-05', name:'iris_dashboard_20260505.html' },
     { date:'2026-04-27', name:'iris_dashboard_20260427.html' },
     { date:'2026-04-20', name:'iris_dashboard_20260420.html' },
     { date:'2026-04-13', name:'iris_dashboard_20260413.html' },
@@ -469,17 +473,20 @@ const outputs = {
     { date:'2026-04-20', name:'2026-04-20_weekly-plan.md' },
     { date:'2026-04-16', name:'2026-04-16_thu_blog.md' },
     { date:'2026-04-14', name:'2026-04-14_tue_blog.md' },
+    { date:'2026-04-13', name:'2026-04-13_weekly-plan.md' },
+    { date:'2026-04-09', name:'2026-04-09_thu_blog.md' },
   ],
   '리포트 (주간)': [
+    { date:'2026-05-06', name:'2026-05-06_health-check.md', path:'computer:///Users/jerrykim/Documents/GTM/agents/reports/health-check/2026-05-06_health-check.md' },
+    { date:'2026-04-27', name:'2026-04-27_health-check.md', path:'computer:///Users/jerrykim/Documents/GTM/agents/reports/health-check/2026-04-27_health-check.md' },
     { date:'2026-04-20', name:'2026-04-20_subagent_health_check.md' },
     { date:'2026-04-19', name:'2026-W16_주간업무리포트_타미_제리.html', path:'computer:///Users/jerrykim/Documents/GTM/agents/reports/weekly-work-manager/2026-W16_주간업무리포트_타미_제리.html' },
-    { date:'2026-04-13', name:'2026-04-13_subagent_health_check.md' },
   ],
 };
 
 const kpiData = [
-  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:26, ratio:10 },
-  { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:8, ratio:15 },
+  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:32, ratio:10 },
+  { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:19, ratio:15 },
   { area:'데모/PoC', metric:'표준 데모 작성 건수', target:10, actual:0, ratio:5 },
   { area:'데모/PoC', metric:'데모/PoC 수행 건수', target:15, actual:3, ratio:5 },
   { area:'교육', metric:'교육 수행 건수', target:30, actual:5, ratio:10 },
@@ -493,19 +500,20 @@ const kpiActivities = [
   {
     area:'시장분석', metric:'타겟 시장 분석 수',
     activities:[
-      { label:'국내 시장조사 (일간 자동)', count:'18건', period:'평일 12:06 자동실행, 04/01~04/28 누적', agent:'시장조사 에이전트' },
-      { label:'글로벌 시장조사 (주간)', count:'4건', period:'04/06, 04/13, 04/20, 04/27', agent:'시장조사 에이전트' },
-      { label:'경쟁사 분석 (주간)', count:'4건', period:'04/06, 04/13, 04/20, 04/26', agent:'경쟁사 분석 에이전트' },
-      { label:'IRIS 연구과제 모니터링', count:'3건', period:'04/13, 04/20, 04/27 HTML 대시보드 생성', agent:'IRIS 모니터 에이전트' },
+      { label:'국내 시장조사 (일간 자동)', count:'22건', period:'평일 12:06 자동실행, 04/01~05/08 누적', agent:'시장조사 에이전트' },
+      { label:'글로벌 시장조사 (주간)', count:'5건', period:'04/06, 04/13, 04/20, 04/27, 05/06', agent:'시장조사 에이전트' },
+      { label:'경쟁사 분석 (주간)', count:'5건', period:'04/06, 04/13, 04/20, 04/26, 05/04', agent:'경쟁사 분석 에이전트' },
+      { label:'IRIS 연구과제 모니터링', count:'4건', period:'04/13, 04/20, 04/27, 05/05 HTML 대시보드 생성', agent:'IRIS 모니터 에이전트' },
     ]
   },
   {
     area:'고객발굴', metric:'신규 사업/고객 리드 수',
     activities:[
+      { label:'sales-meeting-db 누적 신규 미팅 기관', count:'19건', period:'04/01~05/10 unique 고객사/시군 기준', agent:'영업지원 + 미팅 DB' },
       { label:'인구소멸지역 특화 제안 (영양군·청송군)', count:'2건', period:'04/14 제안서 작성', agent:'영업지원 에이전트' },
       { label:'GovTech 공모과제 참여 리드 (시흥시)', count:'1건', period:'04/23 마감, 시흥시 협의 완료', agent:'GTM Advisor' },
       { label:'광주시 차관 보고 후속 제안 (3단계)', count:'1건', period:'구별·시군·대시민 통합 제안 진행', agent:'영업지원 에이전트' },
-      { label:'경기·충청·영남 권역 현장 미팅 발굴', count:'4건', period:'기존 고객 후속 + 신규 접점 발굴', agent:'영업지원 에이전트' },
+      { label:'경기·충청·영남·인천 권역 현장 미팅', count:'15건', period:'테디·로드 영업방문 누적 (sales-meeting-db)', agent:'영업지원 에이전트' },
     ]
   },
   {
@@ -543,7 +551,7 @@ const kpiActivities = [
   {
     area:'마케팅', metric:'마케팅 기반 리드 수',
     activities:[
-      { label:'B2G 블로그 포스팅 (홀딩 전)', count:'8건', period:'04/02~04/20, 주 2~3회 발행 후 04/20부터 홀딩', agent:'B2G 마케팅 에이전트' },
+      { label:'B2G 블로그 포스팅 (홀딩 전)', count:'8건', period:'04/02~04/20, 주 2~3회 발행 후 04/20부터 홀딩 5주차', agent:'B2G 마케팅 에이전트' },
     ]
   },
 ];
@@ -629,7 +637,7 @@ let weightedTotal = 0;
 
 kpiData.forEach(k => {
   const pct = Math.round((k.actual/k.target)*100);
-  const timePct = 31; // ~31% through 2026 (04/23 기준)
+  const timePct = 36; // ~36% through 2026 (05/11 기준, 131일/365일)
   const cls = pct>=timePct?'green':pct>=timePct*0.6?'yellow':'red';
   const statusLabel = cls==='green'?'🟢 순항':cls==='yellow'?'🟡 주의':'🔴 위험';
   weightedTotal += (pct/100)*k.ratio;
@@ -656,7 +664,7 @@ kpiGrid.innerHTML = `
   </div>
   ${Object.entries(kpiSummary).map(([area, v]) => {
     const pct = Math.round(v.actual/v.target*100);
-    const cls = pct>=31?'green':pct>=18?'yellow':'red';
+    const cls = pct>=36?'green':pct>=20?'yellow':'red';
     return `<div class="kpi-card">
       <div class="label">${area}</div>
       <div class="value">${v.actual}<span style="font-size:14px;color:var(--text2)">/${v.target}</span></div>
