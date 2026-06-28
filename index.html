@@ -369,7 +369,7 @@
 <!-- ==================== TAB 6: KPI 추적 ==================== -->
 <div class="tab-panel" id="kpi">
   <div class="card">
-    <h2>🎯 2026년 KPI 현황 (Q2 진행중 · 4/1 ~ 6/22 기준)</h2>
+    <h2>🎯 2026년 KPI 현황 (Q2 진행중 · 4/1 ~ 6/29 기준)</h2>
     <div class="kpi-grid" id="kpiGrid">
       <!-- populated by JS -->
     </div>
@@ -392,7 +392,7 @@
 // ===== DATA (이 섹션을 업데이트하면 대시보드가 자동 반영됩니다) =====
 
 // 날짜 동적 포맷 (YYYY-MM-DD → 한국어)
-const LAST_UPDATED_RAW = '2026-06-22';
+const LAST_UPDATED_RAW = '2026-06-29';
 const _d = new Date(LAST_UPDATED_RAW);
 const _days = ['일','월','화','수','목','금','토'];
 const LAST_UPDATED = `${LAST_UPDATED_RAW} (${_days[_d.getDay()]}) 08:30 KST`;
@@ -403,14 +403,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const agents = [
   { name:'시장조사 에이전트', schedule:'평일 12:06', status:'green', lastDate:'2026-06-17', weekCount:1, note:'06/17 시장조사 1건 생성, 정상 운영 중' },
-  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'green', lastDate:'2026-06-15', weekCount:1, note:'06/15 weekly_competitor_report 생성' },
-  { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'green', lastDate:'2026-06-15', weekCount:1, note:'06/15 주간 글로벌 리포트 정상 생성' },
-  { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'green', lastDate:'2026-06-15', weekCount:1, note:'06/15 iris_dashboard_20260615.html 생성 확인' },
+  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'green', lastDate:'2026-06-22', weekCount:1, note:'06/22 weekly_competitor_report 생성' },
+  { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'green', lastDate:'2026-06-22', weekCount:1, note:'06/22 주간 글로벌 리포트 정상 생성' },
+  { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'green', lastDate:'2026-06-22', weekCount:1, note:'06/22 iris_dashboard_20260622.html 생성 확인' },
   { name:'지자체 리서치 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-05-19', weekCount:0, note:'이번 주 신규 없음, 경기도 시군 리서치 완료 유지' },
-  { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-05-19', weekCount:0, note:'이번 주 신규 없음, 5/19 영업시나리오 최종' },
+  { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-06-22', weekCount:2, note:'06/22 사물주소 우선타겟 접근전략·세일즈전략 2건 생성' },
   { name:'B2G 마케팅 에이전트', schedule:'주간 (월·화·목)', status:'yellow', lastDate:'2026-06-02', weekCount:0, note:'06/02 전북도청 교육가이드 최종, 마케팅 에이전트 홀딩 중 (enabled=false)' },
-  { name:'퍼스널 브랜딩', schedule:'주간 (월 10:07)', status:'green', lastDate:'2026-06-20', weekCount:1, note:'06/20 주간 콘텐츠 브리핑 생성' },
-  { name:'영업 회의록 DB 동기화', schedule:'매일 06:30 (Tiro)', status:'green', lastDate:'2026-06-21', weekCount:1, note:'sales-meeting-db master.json 06/21 갱신, 정상' },
+  { name:'퍼스널 브랜딩', schedule:'주간 (월 10:07)', status:'green', lastDate:'2026-06-28', weekCount:1, note:'06/28 주간 콘텐츠 브리핑 생성' },
+  { name:'영업 회의록 DB 동기화', schedule:'매일 06:30 (Tiro)', status:'green', lastDate:'2026-06-28', weekCount:1, note:'sales-meeting-db master.json 06/28 갱신, 정상' },
   { name:'QA Verifier', schedule:'온디맨드', status:'gray', lastDate:'2026-04-07', weekCount:0, note:'검증 요청 시 활성화' },
 ];
 
@@ -426,11 +426,12 @@ const feedbackLoops = [
 ];
 
 const recommendations = [
-  '[정상] 글로벌 시장조사(06/08)·경쟁사 분석(06/10)·IRIS 모니터(06/08) 주간 리포트 정상 생성 확인',
-  '[정상] 국내 시장조사 이번 주 3건(06/10·11·12) 생성, 평일 자동 운영 안정적',
-  '[진행중] 경기도 5개 시군 영업시나리오 5/19 완료 (고양·남양주·부천·안산·용인) — 영업 방문 실행 단계',
-  '[진행중] Tiro 회의록 DB 2026-06-14 갱신, 일일 자동 동기화 정상 운영 중 (06/09 한국에스리 내부랩업 적재)',
-  '[관찰] 시장분석 Q2 56건·고객발굴 28건 (목표 15건 초과) — KPI 초과달성 유지. 일간 시장조사 원본 일부 아카이브 이관(현재 폴더 19건)',
+  '[정상] 글로벌 시장조사(06/22)·경쟁사 분석(06/22)·IRIS 모니터(06/22) 주간 리포트 정상 생성 확인',
+  '[정상] 국내 시장조사 6/17 최신, 평일 자동 운영 안정적 유지',
+  '[신규] 사물주소 영업전략 2건(06/22) 생성 — 사물주소 우선타겟 접근전략·세일즈전략',
+  '[신규] 에이전틱 세미나 3건(06/21) 회의록 적재 — 교육 수행 KPI 3건 추가(누계 8건)',
+  '[정상] Tiro 회의록 DB 06/28 갱신, 일일 자동 동기화 정상 운영 중, 퍼스널 브랜딩 06/28 주간 브리핑 생성',
+  '[관찰] 시장분석 Q2 24건·고객발굴 28건 (목표 15건 초과) — KPI 초과달성 유지 (Q2 마감 D-2)',
 ];
 
 const outputs = {
@@ -440,19 +441,19 @@ const outputs = {
     { date:'2026-06-11', name:'2026-06-11_시장조사.md' },
   ],
   '시장조사 (글로벌)': [
+    { date:'2026-06-22', name:'2026-06-22_global_market_report.md' },
     { date:'2026-06-15', name:'2026-06-15_global_market_report.md' },
     { date:'2026-06-08', name:'2026-06-08_global_market_report.md' },
-    { date:'2026-06-01', name:'2026-06-01_global_market_report.md' },
   ],
   '경쟁사 분석': [
+    { date:'2026-06-22', name:'2026-06-22_weekly_competitor_report.md' },
     { date:'2026-06-15', name:'2026-06-15_weekly_competitor_report.md' },
     { date:'2026-06-10', name:'2026-06-10_경쟁사분석.md' },
-    { date:'2026-06-01', name:'2026-06-01_weekly_competitor_report.md' },
   ],
   'IRIS 연구과제': [
-    { date:'2026-06-15', name:'iris_dashboard_20260615.html (최신)' },
+    { date:'2026-06-22', name:'iris_dashboard_20260622.html (최신)' },
+    { date:'2026-06-15', name:'iris_dashboard_20260615.html' },
     { date:'2026-06-08', name:'iris_dashboard_20260608.html' },
-    { date:'2026-06-01', name:'iris_dashboard_20260601.html' },
   ],
   '지자체 리서치': [
     { date:'2026-05-19', name:'경기도/고양시_영업시나리오.md' },
@@ -462,11 +463,11 @@ const outputs = {
     { date:'2026-05-19', name:'경기도/용인시_영업시나리오.md' },
   ],
   '영업지원': [
+    { date:'2026-06-22', name:'사물주소_우선타겟_접근전략.md' },
+    { date:'2026-06-22', name:'사물주소_세일즈전략.md' },
     { date:'2026-05-19', name:'고양시_영업시나리오.md' },
     { date:'2026-05-19', name:'남양주시_영업시나리오.md' },
     { date:'2026-05-19', name:'부천시_화재대응GIS_시나리오_v1.md' },
-    { date:'2026-05-19', name:'안산시_영업시나리오.md' },
-    { date:'2026-05-19', name:'용인시_영업시나리오.md' },
   ],
   'B2G 마케팅': [
     { date:'2026-06-02', name:'2026-06-02_전북도청_사용자교육_공간데이터활용가이드.pptx' },
@@ -474,9 +475,9 @@ const outputs = {
     { date:'2026-05-21', name:'2026-05-21_제품데모영상_제작가이드.html' },
   ],
   '퍼스널 브랜딩': [
+    { date:'2026-06-28', name:'2026-06-28_weekly_content_briefing.md' },
     { date:'2026-06-20', name:'2026-06-20_weekly_content_briefing.md' },
     { date:'2026-06-14', name:'2026-06-14_weekly_content_briefing.md' },
-    { date:'2026-06-07', name:'2026-06-07_weekly_content_briefing.md' },
   ],
   '리포트 (주간)': [
     { date:'2026-06-08', name:'2026-06-08_health-check.md', path:'computer:///Users/jerrykim/Documents/GTM/agents/reports/health-check/2026-06-08_health-check.md' },
@@ -486,11 +487,11 @@ const outputs = {
 };
 
 const kpiData = [
-  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:22, ratio:10 },
+  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:24, ratio:10 },
   { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:28, ratio:15 },
   { area:'데모/PoC', metric:'표준 데모 작성 건수', target:10, actual:1, ratio:5 },
   { area:'데모/PoC', metric:'데모/PoC 수행 건수', target:15, actual:5, ratio:5 },
-  { area:'교육', metric:'교육 수행 건수', target:30, actual:5, ratio:10 },
+  { area:'교육', metric:'교육 수행 건수', target:30, actual:8, ratio:10 },
   { area:'교육', metric:'커리큘럼/콘텐츠 제작', target:10, actual:1, ratio:5 },
   { area:'교육', metric:'교육 후 추가 리드', target:5, actual:0, ratio:5 },
   { area:'마케팅', metric:'마케팅 기반 리드 수', target:10, actual:1, ratio:5 },
@@ -502,9 +503,9 @@ const kpiActivities = [
     area:'시장분석', metric:'타겟 시장 분석 수',
     activities:[
       { label:'국내 시장조사 (일간 자동)', count:'7건', period:'평일 12:06 자동실행, 04/01~06/17 Q2 누적', agent:'시장조사 에이전트' },
-      { label:'글로벌 시장조사 (주간)', count:'11건', period:'04/06~06/15 누적, 정상 운영 중', agent:'글로벌 시장조사 에이전트' },
-      { label:'경쟁사 분석 (주간)', count:'4건', period:'04/01~06/15 Q2 누적', agent:'경쟁사 분석 에이전트' },
-      { label:'IRIS 연구과제 모니터링', count:'10건', period:'04/13~06/15 누적, iris_dashboard_20260615.html 확인', agent:'IRIS 모니터 에이전트' },
+      { label:'글로벌 시장조사 (주간)', count:'12건', period:'04/06~06/22 누적, 정상 운영 중', agent:'글로벌 시장조사 에이전트' },
+      { label:'경쟁사 분석 (주간)', count:'5건', period:'04/01~06/22 Q2 누적', agent:'경쟁사 분석 에이전트' },
+      { label:'IRIS 연구과제 모니터링', count:'11건', period:'04/13~06/22 누적, iris_dashboard_20260622.html 확인', agent:'IRIS 모니터 에이전트' },
     ]
   },
   {
@@ -535,6 +536,7 @@ const kpiActivities = [
     area:'교육', metric:'교육 수행 건수',
     activities:[
       { label:'Q2 공공기관 대상 교육 세션', count:'5건', period:'04/01~04/23 수행 완료', agent:'GTM Advisor' },
+      { label:'에이전틱 세미나 (신규)', count:'3건', period:'06/21 에이전틱세미나 1·2·3 회의록 적재', agent:'GTM Advisor' },
     ]
   },
   {
