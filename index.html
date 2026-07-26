@@ -369,7 +369,7 @@
 <!-- ==================== TAB 6: KPI 추적 ==================== -->
 <div class="tab-panel" id="kpi">
   <div class="card">
-    <h2>🎯 2026년 KPI 현황 (Q3 진행중 · 7/1 ~ 7/13 기준)</h2>
+    <h2>🎯 2026년 KPI 현황 (Q3 진행중 · 7/1 ~ 7/27 기준)</h2>
     <div class="kpi-grid" id="kpiGrid">
       <!-- populated by JS -->
     </div>
@@ -392,7 +392,7 @@
 // ===== DATA (이 섹션을 업데이트하면 대시보드가 자동 반영됩니다) =====
 
 // 날짜 동적 포맷 (YYYY-MM-DD → 한국어)
-const LAST_UPDATED_RAW = '2026-07-13';
+const LAST_UPDATED_RAW = '2026-07-27';
 const _d = new Date(LAST_UPDATED_RAW);
 const _days = ['일','월','화','수','목','금','토'];
 const LAST_UPDATED = `${LAST_UPDATED_RAW} (${_days[_d.getDay()]}) 08:30 KST`;
@@ -402,15 +402,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const agents = [
-  { name:'시장조사 에이전트', schedule:'평일 12:00 (중단 추정)', status:'red', lastDate:'2026-06-17', weekCount:0, note:'국내 일간 시장조사 06/17 이후 미생성 — 지난주 대시보드의 07/01·07/03 기록은 오류로 정정. 재가동/종료 결정 필요' },
-  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'green', lastDate:'2026-07-06', weekCount:1, note:'07/06 weekly_competitor_report 생성' },
-  { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'green', lastDate:'2026-07-06', weekCount:1, note:'07/06 주간 글로벌 리포트 정상 생성' },
-  { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'green', lastDate:'2026-07-06', weekCount:1, note:'07/06 iris_dashboard_20260706.html 생성 확인' },
-  { name:'지자체 리서치 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-07-11', weekCount:0, note:'07/11 경기도 폴더 병합(구버전 보존) 유지보수 — 신규 리서치 없음' },
-  { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-07-01', weekCount:0, note:'07/01 Esri UC 2026 파트너사 분석 이후 신규 없음' },
+  { name:'시장조사 에이전트', schedule:'평일 (일간 자동)', status:'green', lastDate:'2026-07-24', weekCount:4, note:'국내 일간 시장조사 07/13 재가동 확인 — 07/21~24 이번 주 4건 생성. 06/17 중단 상태에서 정상 복귀' },
+  { name:'경쟁사 분석 에이전트', schedule:'주간 (월 09:37)', status:'yellow', lastDate:'2026-07-13', weekCount:0, note:'07/13 이후 주간 리포트 미생성 — 07/20·07/27 산출 누락. sync 점검 요망' },
+  { name:'글로벌 시장조사', schedule:'주간 (월 11:06)', status:'red', lastDate:'2026-07-06', weekCount:0, note:'07/06 이후 3주간 미생성 — 재가동/종료 결정 필요' },
+  { name:'IRIS 연구과제 모니터', schedule:'주간 (월 09:10)', status:'yellow', lastDate:'2026-07-13', weekCount:0, note:'07/13 iris_dashboard 이후 07/20·07/27 아카이브 누락' },
+  { name:'지자체 리서치 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-07-12', weekCount:0, note:'07/12 경기 북부(동두천·양주·연천) 3건 브리핑 갱신 — 이후 신규 없음' },
+  { name:'영업지원 에이전트', schedule:'온디맨드', status:'green', lastDate:'2026-07-16', weekCount:0, note:'07/16 회의록 기반 후속 이후 신규 가공 영업자료 없음(영업자료 최신 07/01 Esri UC 분석)' },
   { name:'B2G 마케팅 에이전트', schedule:'주간 (월·화·목)', status:'yellow', lastDate:'2026-06-25', weekCount:0, note:'06/25 Snowflake 파트너십 전략보고서, 마케팅 에이전트 홀딩 중 (enabled=false)' },
-  { name:'퍼스널 브랜딩', schedule:'주간 (월 10:07)', status:'green', lastDate:'2026-07-12', weekCount:1, note:'07/12 주간 콘텐츠 브리핑 생성' },
-  { name:'영업 회의록 DB 동기화', schedule:'매일 06:30 (Tiro)', status:'yellow', lastDate:'2026-07-12', weekCount:1, note:'master.json 07/12 갱신 — 단 회의록 원본(.md)은 06/22 이후 신규 없음(신규 미팅 부재 or sync 점검 필요)' },
+  { name:'퍼스널 브랜딩', schedule:'주간 (월 10:07)', status:'green', lastDate:'2026-07-26', weekCount:1, note:'07/26 주간 콘텐츠 브리핑 생성' },
+  { name:'영업 회의록 DB 동기화', schedule:'매일 06:30 (Tiro)', status:'green', lastDate:'2026-07-26', weekCount:1, note:'master/meetings_db 07/26 갱신, 회의록 원본(.md) 07/16 신규 확보 — sync 정상 복귀' },
   { name:'QA Verifier', schedule:'온디맨드', status:'gray', lastDate:'2026-04-07', weekCount:0, note:'검증 요청 시 활성화' },
 ];
 
@@ -426,41 +426,42 @@ const feedbackLoops = [
 ];
 
 const recommendations = [
-  '[정정] 국내 일간 시장조사는 06/17 이후 중단 상태 — 지난주 대시보드의 07/01·07/03 생성 기록은 오류였음. 재가동 or 공식 종료 결정 필요(CLAUDE.md 백로그 5번)',
-  '[정상] 글로벌 시장조사(07/06)·경쟁사 분석(07/06)·IRIS 모니터(07/06) 주간 리포트 정상 생성',
-  '[정상] 퍼스널 브랜딩 07/12 주간 콘텐츠 브리핑 생성, sales-meeting-db 07/12 갱신',
-  '[관찰] 회의록_DB 원본 .md가 06/22 이후 신규 없음 — 3주간 신규 미팅 기록 부재. Tiro sync 상태 or 실제 미팅 여부 확인 요망',
-  '[관찰] Q3 2주차 — 데모/PoC·교육·마케팅 실적 미착수, 고객발굴은 07/01 Esri UC 1건 이후 정체. 7월 중 착수 필요',
-  '[유지보수] 07/11 경기도 폴더 병합·볼트 루트 정리 완료 — portal_sentry_final.html은 agents/reports/_루트이관_20260711/로 이동됨',
+  '[복귀] 국내 일간 시장조사 07/13 재가동 확인 — 이번 주 4건(07/21~24) 정상 생성. 06/17 중단 이슈 해소, CLAUDE.md 백로그 5번 국내 일간 항목은 종료 처리 가능',
+  '[지연] 글로벌 시장조사 07/06 이후 3주 미생성(🔴), 경쟁사 분석·IRIS 모니터 07/13 이후 주간 산출 누락(🟡) — 세 주간 스케줄 상태 일괄 점검 필요',
+  '[정상] 퍼스널 브랜딩 07/26 주간 콘텐츠 브리핑 생성, 회의록 DB 07/26 갱신 + 원본 .md 07/16 신규 확보로 Tiro sync 정상 복귀',
+  '[관찰] Q3 KPI — 시장분석 12/15(80%), 고객발굴 4/15(27%). 데모/PoC·교육·마케팅 여전히 미착수, 3분기 절반 경과 전 착수 필요',
+  '[관찰] 고객발굴은 07/01 Esri UC + 07/12 경기 북부 리서치 3건 이후 정체 — 신규 리드 발굴 케이던스 회복 필요',
 ];
 
 const outputs = {
   '시장조사 (국내)': [
-    { date:'2026-06-17', name:'2026-06-17_시장조사.md (이후 중단)' },
-    { date:'2026-06-12', name:'2026-06-12_시장조사.md' },
-    { date:'2026-06-11', name:'2026-06-11_시장조사.md' },
+    { date:'2026-07-24', name:'2026-07-24_시장조사.md (최신)' },
+    { date:'2026-07-23', name:'2026-07-23_시장조사.md' },
+    { date:'2026-07-22', name:'2026-07-22_시장조사.md' },
+    { date:'2026-07-21', name:'2026-07-21_시장조사.md' },
+    { date:'2026-07-17', name:'2026-07-17_시장조사.md' },
   ],
   '시장조사 (글로벌)': [
-    { date:'2026-07-06', name:'2026-07-06_global_market_report.md' },
+    { date:'2026-07-06', name:'2026-07-06_global_market_report.md (이후 미생성)' },
     { date:'2026-06-29', name:'2026-06-29_global_market_report.md' },
     { date:'2026-06-22', name:'2026-06-22_global_market_report.md' },
   ],
   '경쟁사 분석': [
+    { date:'2026-07-13', name:'2026-07-13_weekly_competitor_report.md (최신)' },
     { date:'2026-07-06', name:'2026-07-06_weekly_competitor_report.md' },
     { date:'2026-06-29', name:'2026-06-29_weekly_competitor_report.md' },
-    { date:'2026-06-22', name:'2026-06-22_weekly_competitor_report.md' },
   ],
   'IRIS 연구과제': [
-    { date:'2026-07-06', name:'iris_dashboard_20260706.html (최신)' },
+    { date:'2026-07-13', name:'iris_dashboard_20260713.html (최신)' },
+    { date:'2026-07-06', name:'iris_dashboard_20260706.html' },
     { date:'2026-06-29', name:'iris_dashboard_20260629.html' },
-    { date:'2026-06-22', name:'iris_dashboard_20260622.html' },
   ],
   '지자체 리서치': [
-    { date:'2026-05-19', name:'경기도/고양시_영업시나리오.md' },
-    { date:'2026-05-19', name:'경기도/남양주시_영업시나리오.md' },
-    { date:'2026-05-19', name:'경기도/부천시_화재대응GIS_시나리오.md' },
-    { date:'2026-05-19', name:'경기도/안산시_영업시나리오.md' },
-    { date:'2026-05-19', name:'경기도/용인시_영업시나리오.md' },
+    { date:'2026-07-12', name:'경기/동두천시.md (갱신)' },
+    { date:'2026-07-12', name:'경기/양주시.md (갱신)' },
+    { date:'2026-07-12', name:'경기/연천군.md (갱신)' },
+    { date:'2026-05-19', name:'경기/고양시_영업시나리오.md' },
+    { date:'2026-05-19', name:'경기/남양주시_영업시나리오.md' },
   ],
   '영업지원': [
     { date:'2026-07-01', name:'2026-07-01_EsriUC2026_파트너사분석.md' },
@@ -475,20 +476,20 @@ const outputs = {
     { date:'2026-05-28', name:'2026-05-28_FloodGuard_도시침수대응_랜딩페이지.html' },
   ],
   '퍼스널 브랜딩': [
+    { date:'2026-07-26', name:'2026-07-26_weekly_content_briefing.md' },
     { date:'2026-07-12', name:'2026-07-12_weekly_content_briefing.md' },
     { date:'2026-07-05', name:'2026-07-05_weekly_content_briefing.md' },
-    { date:'2026-06-28', name:'2026-06-28_weekly_content_briefing.md' },
   ],
   '리포트 (주간)': [
+    { date:'2026-07-13', name:'2026-07-13_health-check.md', path:'computer:///Users/jerrykim/Documents/GTM/agents/reports/health-check/2026-07-13_health-check.md' },
     { date:'2026-07-06', name:'2026-07-06_health-check.md', path:'computer:///Users/jerrykim/Documents/GTM/agents/reports/health-check/2026-07-06_health-check.md' },
     { date:'2026-06-29', name:'2026-06-29_health-check.md', path:'computer:///Users/jerrykim/Documents/GTM/agents/reports/health-check/2026-06-29_health-check.md' },
-    { date:'2026-06-08', name:'2026-06-08_health-check.md', path:'computer:///Users/jerrykim/Documents/GTM/agents/reports/health-check/2026-06-08_health-check.md' },
   ],
 };
 
 const kpiData = [
-  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:2, ratio:10 },
-  { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:1, ratio:15 },
+  { area:'시장분석', metric:'타겟 시장 분석 수', target:15, actual:12, ratio:10 },
+  { area:'고객발굴', metric:'신규 사업/고객 리드 수', target:15, actual:4, ratio:15 },
   { area:'데모/PoC', metric:'표준 데모 작성 건수', target:10, actual:0, ratio:5 },
   { area:'데모/PoC', metric:'데모/PoC 수행 건수', target:15, actual:0, ratio:5 },
   { area:'교육', metric:'교육 수행 건수', target:30, actual:0, ratio:10 },
@@ -502,16 +503,17 @@ const kpiActivities = [
   {
     area:'시장분석', metric:'타겟 시장 분석 수',
     activities:[
-      { label:'국내 시장조사 (일간 자동)', count:'0건', period:'06/17 이후 중단 — Q3 산출 없음 (지난주 07/01·07/03 기록은 오류 정정)', agent:'시장조사 에이전트' },
-      { label:'글로벌 시장조사 (주간)', count:'1건', period:'07/06 global_market_report Q3 1건', agent:'글로벌 시장조사 에이전트' },
-      { label:'경쟁사 분석 (주간)', count:'1건', period:'07/06 weekly_competitor_report Q3 1건', agent:'경쟁사 분석 에이전트' },
-      { label:'IRIS 연구과제 모니터링 (참고)', count:'1건', period:'07/06 iris_dashboard_20260706.html (KPI 집계 제외 참고)', agent:'IRIS 모니터 에이전트' },
+      { label:'국내 시장조사 (일간 자동)', count:'9건', period:'07/13~07/24 재가동 — Q3 국내 일간 9건 생성', agent:'시장조사 에이전트' },
+      { label:'글로벌 시장조사 (주간)', count:'1건', period:'07/06 global_market_report Q3 1건 (이후 신규 없음)', agent:'글로벌 시장조사 에이전트' },
+      { label:'경쟁사 분석 (주간)', count:'2건', period:'07/06·07/13 weekly_competitor_report Q3 2건', agent:'경쟁사 분석 에이전트' },
+      { label:'IRIS 연구과제 모니터링 (참고)', count:'1건', period:'07/13 iris_dashboard_20260713.html (KPI 집계 제외 참고)', agent:'IRIS 모니터 에이전트' },
     ]
   },
   {
     area:'고객발굴', metric:'신규 사업/고객 리드 수',
     activities:[
       { label:'Esri UC 2026 파트너사 분석', count:'1건', period:'07/01 파트너사 분석 리포트 작성', agent:'영업지원 에이전트' },
+      { label:'경기 북부 지자체 리서치 갱신 (동두천·양주·연천)', count:'3건', period:'07/12 시군 브리핑 시트 3건 갱신', agent:'지자체 리서치 에이전트' },
     ]
   },
   {
@@ -523,7 +525,7 @@ const kpiActivities = [
   {
     area:'데모/PoC', metric:'데모/PoC 수행 건수',
     activities:[
-      { label:'현장 데모/PoC 수행', count:'0건', period:'Q3 미착수', agent:'영업지원 에이전트' },
+      { label:'현장 데모/PoC 수행', count:'0건', period:'Q3 미착수 (Esri UC 분석 내 \'demo\' 문자열 1건은 실제 데모 아님 — 집계 제외)', agent:'영업지원 에이전트' },
     ]
   },
   {
@@ -633,7 +635,7 @@ let weightedTotal = 0;
 
 kpiData.forEach(k => {
   const pct = Math.round((k.actual/k.target)*100);
-  const timePct = 44; // ~44% through 2026 (06/08 기준, 159일/365일)
+  const timePct = 57; // ~57% through 2026 (07/27 기준, 208일/365일)
   const cls = pct>=timePct?'green':pct>=timePct*0.6?'yellow':'red';
   const statusLabel = cls==='green'?'🟢 순항':cls==='yellow'?'🟡 주의':'🔴 위험';
   weightedTotal += (pct/100)*k.ratio;
